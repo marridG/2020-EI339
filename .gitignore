@@ -7,6 +7,7 @@ __pycache__/
 .idea/
 _*/
 _*.*
+!__*.*
 *.npy
 *.txt
 
