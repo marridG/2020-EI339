@@ -14,7 +14,7 @@ def find_puzzle(image: np.ndarray, debug: bool = False) -> (np.ndarray, np.ndarr
     """
     Find the puzzle in the input image
     :param image:   image data
-    :param debug:   whether to show mid-process images
+    :param debug:   whether to show intermediate images
     :return:        transformed (bird view) image in (1) RGB and (2) Grayscale
     """
     debug_imgs = []  # for debug only, to-show imgs
@@ -105,7 +105,17 @@ def find_puzzle(image: np.ndarray, debug: bool = False) -> (np.ndarray, np.ndarr
     return puzzle, warped
 
 
-def extract_digit(cell, debug=False):
+def extract_digit(cell: np.ndarray, debug: bool = False):
+    """
+
+    :param cell:    an ROI representing an individual cell of the Sudoku puzzle
+                        (it may or may not contain a digit)
+    :param debug:   whether to show intermediate images
+    :return:
+    """
+    debug_imgs = []  # for debug only, to-show imgs
+    debug_subtitles = []  # for debug only, subtitles of the to-show imgs
+
     # apply automatic thresholding to the cell and then clear any
     # connected borders that touch the border of the cell
     thresh = cv2.threshold(cell, 0, 255,
@@ -114,8 +124,8 @@ def extract_digit(cell, debug=False):
 
     # check to see if we are visualizing the cell thresholding step
     if debug:
-        cv2.imshow("Cell Thresh", thresh)
-        cv2.waitKey(0)
+        debug_imgs.append(thresh.copy())
+        debug_subtitles.append("Cell Thresh")
 
     # find contours in the thresholded cell
     cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
