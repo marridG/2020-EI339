@@ -4,12 +4,28 @@ from skimage.segmentation import clear_border
 import numpy as np
 import imutils
 import cv2
+from matplotlib import pyplot as plt
+
+# import modules
+from Sudoku.assist_utils import multi_img_view
 
 
 def find_puzzle(image, debug=False):
+    debug_imgs = []  # for debug only, to-show imgs
+    debug_subtitles = []  # for debug only, subtitles of the to-show imgs
+
     # convert the image to grayscale and blur it slightly
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (7, 7), 3)
+
+    # check to see the operations done on the original image
+    if debug:
+        debug_imgs.append(image.copy())
+        debug_subtitles.append("Puzzle Original")
+        debug_imgs.append(gray.copy())
+        debug_subtitles.append("Puzzle Gray")
+        debug_imgs.append(blurred.copy())
+        debug_subtitles.append("Puzzle Blurred")
 
     # apply adaptive thresholding and then invert the threshold map
     thresh = cv2.adaptiveThreshold(blurred, 255,
@@ -19,8 +35,8 @@ def find_puzzle(image, debug=False):
     # check to see if we are visualizing each step of the image
     # processing pipeline (in this case, thresholding)
     if debug:
-        cv2.imshow("Puzzle Thresh", thresh)
-        cv2.waitKey(0)
+        debug_imgs.append(thresh.copy())
+        debug_subtitles.append("Puzzle Thresh")
 
     # find contours in the thresholded image and sort them by size in
     # descending order
@@ -57,8 +73,8 @@ def find_puzzle(image, debug=False):
         # it to our screen for visualization/debugging purposes
         output = image.copy()
         cv2.drawContours(output, [puzzle_cnt], -1, (0, 255, 0), 2)
-        cv2.imshow("Puzzle Outline", output)
-        cv2.waitKey(0)
+        debug_imgs.append(output)
+        debug_subtitles.append("Puzzle Outline")
 
     # apply a four point perspective transform to both the original
     # image and grayscale image to obtain a top-down birds eye view
@@ -69,8 +85,15 @@ def find_puzzle(image, debug=False):
     # check to see if we are visualizing the perspective transform
     if debug:
         # show the output warped image (again, for debugging purposes)
-        cv2.imshow("Puzzle Transform", puzzle)
-        cv2.waitKey(0)
+        debug_imgs.append(puzzle.copy())
+        debug_subtitles.append("Puzzle Transform")
+
+    # Show Debug Images
+    if debug:
+        fig = multi_img_view.multi_img_view(
+            images=debug_imgs, subtitles=debug_subtitles, col_cnt=3, row_cnt=2,
+            title="Find Puzzle", fig_size=None, close_all=True)
+        plt.show()
 
     # return a 2-tuple of puzzle in both RGB and grayscale
     return puzzle, warped
