@@ -10,7 +10,13 @@ from matplotlib import pyplot as plt
 from Sudoku.assist_utils import multi_img_view
 
 
-def find_puzzle(image, debug=False):
+def find_puzzle(image: np.ndarray, debug: bool = False) -> (np.ndarray, np.ndarray):
+    """
+    Find the puzzle in the input image
+    :param image:   image data
+    :param debug:   whether to show mid-process images
+    :return:        transformed (bird view) image in (1) RGB and (2) Grayscale
+    """
     debug_imgs = []  # for debug only, to-show imgs
     debug_subtitles = []  # for debug only, subtitles of the to-show imgs
 
@@ -90,7 +96,7 @@ def find_puzzle(image, debug=False):
 
     # Show Debug Images
     if debug:
-        fig = multi_img_view.multi_img_view(
+        _ = multi_img_view.multi_img_view(
             images=debug_imgs, subtitles=debug_subtitles, col_cnt=3, row_cnt=2,
             title="Find Puzzle", fig_size=None, close_all=True)
         plt.show()
