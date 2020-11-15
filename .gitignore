@@ -6,6 +6,7 @@ __pycache__/
 # Added
 .idea/
 _*/
+_*.*
 *.npy
 *.txt
 
