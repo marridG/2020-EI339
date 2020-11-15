@@ -24,9 +24,11 @@ def multi_img_view(images: list, subtitles: list,
     if close_all:
         plt.close("all")
     if len(images) != len(subtitles):
-        raise RuntimeError("[Error] Images Count and Subtitles Count Mismatch")
+        raise RuntimeError("[Error] Images Count and Subtitles Count Mismatch:"
+                           "Images = %d, Subtitles = %d" % (len(images), len(subtitles)))
     if len(images) > row_cnt * col_cnt:
-        raise RuntimeError("[Error] Images Count Overflow")
+        raise RuntimeError("[Error] Images Count Overflow:"
+                           "Got Max row*col=%d*%d, Assigned %d" % (row_cnt, col_cnt, len(images)))
 
     if fig_size is not None:
         fig, _ax = plt.subplots(nrows=row_cnt, ncols=col_cnt, figsize=fig_size)
