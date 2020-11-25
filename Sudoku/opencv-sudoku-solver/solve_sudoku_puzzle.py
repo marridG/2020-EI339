@@ -2,8 +2,6 @@
 # python solve_sudoku_puzzle.py --model output/digit_classifier.h5 --image sudoku_puzzle.jpg
 
 # import the necessary packages
-from pyimagesearch.sudoku import extract_digit
-from pyimagesearch.sudoku import find_puzzle
 from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.models import load_model
 from sudoku import Sudoku
@@ -11,6 +9,10 @@ import numpy as np
 import argparse
 import imutils
 import cv2
+
+# import modules
+from pyimagesearch.sudoku import extract_digit
+from pyimagesearch.sudoku import find_puzzle
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
