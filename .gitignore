@@ -10,7 +10,8 @@ _*.*
 !__*.*
 *.npy
 *.txt
-
+*.h5
+!opencv-sudoku-solver/output/digit_classifier.h5
 
 
 # C extensions
