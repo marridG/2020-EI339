@@ -12,6 +12,7 @@ _*.*
 *.txt
 *.h5
 !opencv-sudoku-solver/output/digit_classifier.h5
+report/
 
 
 # C extensions
