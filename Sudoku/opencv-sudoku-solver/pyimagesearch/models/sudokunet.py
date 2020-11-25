@@ -13,11 +13,11 @@ class SudokuNet:
     def build(width, height, depth, classes):
         # initialize the model
         model = Sequential()
-        inputShape = (height, width, depth)
+        input_shape = (height, width, depth)
 
         # first set of CONV => RELU => POOL layers
         model.add(Conv2D(32, (5, 5), padding="same",
-                         input_shape=inputShape))
+                         input_shape=input_shape))
         model.add(Activation("relu"))
         model.add(MaxPooling2D(pool_size=(2, 2)))
 
