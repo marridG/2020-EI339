@@ -7,7 +7,7 @@ import cv2
 from matplotlib import pyplot as plt
 
 # import modules
-from Sudoku.assist_utils import multi_img_view
+from . import multi_img_view
 
 
 def find_puzzle(image: np.ndarray, debug: bool = False) -> (np.ndarray, np.ndarray):
