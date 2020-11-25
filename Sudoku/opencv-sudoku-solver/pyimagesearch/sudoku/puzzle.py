@@ -111,21 +111,27 @@ def extract_digit(cell: np.ndarray, debug: bool = False):
     :param cell:    an ROI representing an individual cell of the Sudoku puzzle
                         (it may or may not contain a digit)
     :param debug:   whether to show intermediate images
-    :return:
+    :return:        None if no digit contours found
     """
     debug_imgs = []  # for debug only, to-show imgs
     debug_subtitles = []  # for debug only, subtitles of the to-show imgs
+    if debug:
+        debug_imgs.append(cell.copy())
+        debug_subtitles.append("Cell Original")
 
     # apply automatic thresholding to the cell and then clear any
     # connected borders that touch the border of the cell
     thresh = cv2.threshold(cell, 0, 255,
                            cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
+    if debug:
+        debug_imgs.append(thresh.copy())
+        debug_subtitles.append("Threshold")
     thresh = clear_border(thresh)
 
     # check to see if we are visualizing the cell thresholding step
     if debug:
         debug_imgs.append(thresh.copy())
-        debug_subtitles.append("Cell Thresh")
+        debug_subtitles.append("Thresh without Border")
 
     # find contours in the thresholded cell
     cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
@@ -134,6 +140,11 @@ def extract_digit(cell: np.ndarray, debug: bool = False):
 
     # if no contours were found than this is an empty cell
     if len(cnts) == 0:
+        if debug:  # show debug images before return
+            _ = multi_img_view.multi_img_view(
+                images=debug_imgs, subtitles=debug_subtitles, col_cnt=2, row_cnt=2,
+                title="Extract Digits - Returned No Contour", fig_size=None, close_all=True)
+            plt.show()
         return None
 
     # otherwise, find the largest contour in the cell and create a
@@ -141,6 +152,9 @@ def extract_digit(cell: np.ndarray, debug: bool = False):
     c = max(cnts, key=cv2.contourArea)
     mask = np.zeros(thresh.shape, dtype="uint8")
     cv2.drawContours(mask, [c], -1, 255, -1)
+    if debug:
+        debug_imgs.append(mask.copy())
+        debug_subtitles.append("Mask for the Largest Contour")
 
     # compute the percentage of masked pixels relative to the total
     # area of the image
@@ -150,6 +164,11 @@ def extract_digit(cell: np.ndarray, debug: bool = False):
     # if less than 3% of the mask is filled then we are looking at
     # noise and can safely ignore the contour
     if percent_filled < 0.03:
+        if debug:  # show debug images before return
+            _ = multi_img_view.multi_img_view(
+                images=debug_imgs, subtitles=debug_subtitles, col_cnt=2, row_cnt=2,
+                title="Extract Digits - Returned <3%", fig_size=None, close_all=True)
+            plt.show()
         return None
 
     # apply the mask to the thresholded cell
@@ -157,8 +176,15 @@ def extract_digit(cell: np.ndarray, debug: bool = False):
 
     # check to see if we should visualize the masking step
     if debug:
-        cv2.imshow("Digit", digit)
-        cv2.waitKey(0)
+        debug_imgs.append(digit.copy())
+        debug_subtitles.append("Digit by Mask")
+
+    # Show Debug Images
+    if debug:
+        _ = multi_img_view.multi_img_view(
+            images=debug_imgs, subtitles=debug_subtitles, col_cnt=3, row_cnt=2,
+            title="Extract Digits", fig_size=None, close_all=True)
+        plt.show()
 
     # return the digit to the calling function
     return digit
@@ -166,4 +192,34 @@ def extract_digit(cell: np.ndarray, debug: bool = False):
 
 if "__main__" == __name__:
     test_image = cv2.imread("../../sudoku_puzzle.jpg")
-    find_puzzle(image=test_image, debug=True)
+
+    # find the puzzle in the image
+    puzzleImage, warped = find_puzzle(image=test_image, debug=True)
+
+    # initialize our 9x9 Sudoku board
+    board = np.zeros((9, 9), dtype="int")
+    # a Sudoku puzzle is a 9x9 grid (81 individual cells), so we can
+    # infer the location of each cell by dividing the warped image
+    # into a 9x9 grid
+    stepX = warped.shape[1] // 9
+    stepY = warped.shape[0] // 9
+    # initialize a list to store the (x, y)-coordinates of each cell
+    # location
+    cellLocs = []
+    # loop over the grid locations
+    for y in range(0, 9):
+        # initialize the current list of cell locations
+        row = []
+        for x in range(0, 9):
+            # compute the starting and ending (x, y)-coordinates of the current cell
+            startX = x * stepX
+            startY = y * stepY
+            endX = (x + 1) * stepX
+            endY = (y + 1) * stepY
+            # add the (x, y)-coordinates to our cell locations list
+            row.append((startX, startY, endX, endY))
+
+            # crop the cell from the warped transform image and then
+            # extract the digit from the cell
+            cell = warped[startY:endY, startX:endX]
+            _ = extract_digit(cell, debug=True)
