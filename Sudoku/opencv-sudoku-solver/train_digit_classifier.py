@@ -12,7 +12,7 @@ import argparse
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-m", "--model", required=True,
-	help="path to output model after training")
+                help="path to output model after training")
 args = vars(ap.parse_args())
 
 # initialize the initial learning rate, number of epochs to train
@@ -43,24 +43,24 @@ print("[INFO] compiling model...")
 opt = Adam(lr=INIT_LR)
 model = SudokuNet.build(width=28, height=28, depth=1, classes=10)
 model.compile(loss="categorical_crossentropy", optimizer=opt,
-	metrics=["accuracy"])
+              metrics=["accuracy"])
 
 # train the network
 print("[INFO] training network...")
 H = model.fit(
-	trainData, trainLabels,
-	validation_data=(testData, testLabels),
-	batch_size=BS,
-	epochs=EPOCHS,
-	verbose=1)
+    trainData, trainLabels,
+    validation_data=(testData, testLabels),
+    batch_size=BS,
+    epochs=EPOCHS,
+    verbose=1)
 
 # evaluate the network
 print("[INFO] evaluating network...")
 predictions = model.predict(testData)
 print(classification_report(
-	testLabels.argmax(axis=1),
-	predictions.argmax(axis=1),
-	target_names=[str(x) for x in le.classes_]))
+    testLabels.argmax(axis=1),
+    predictions.argmax(axis=1),
+    target_names=[str(x) for x in le.classes_]))
 
 # serialize the model to disk
 print("[INFO] serializing digit model...")
