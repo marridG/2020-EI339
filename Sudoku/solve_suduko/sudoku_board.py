@@ -10,7 +10,7 @@ class SudokuBoard:
         self.BOX_NUM = self.BOARD_SIZE // self.BOX_SIZE
 
         self.board = board.copy()
-        self.board_cells = board.size
+        self.board_cells_cnt = board.size
 
         # Validate Board Settings
         assert board.shape == (self.MAX_NUM, self.MAX_NUM), \
