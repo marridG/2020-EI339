@@ -50,4 +50,7 @@ test_board = np.array(test_board_valid)
 # test_board = np.array(test_board_invalid_2)
 # test_board = np.array(test_board_invalid_3)
 sb = sudoku_board.SudokuBoard(board=test_board)
+# Stored Board
 print(sb.board)
+# Possible Numbers of a Non-empty Cell
+print(sb.find_cell_possible_nums(row_idx=8, col_idx=1))  # [2, 4, 9]
