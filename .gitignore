@@ -11,8 +11,9 @@ _*.*
 *.npy
 *.txt
 *.h5
-!./opencv_sudoku_solver/output/digit_classifier.h5
+!./Sudokuopencv_sudoku_solver/output/digit_classifier.h5
 #report/
+imgs/
 
 # C extensions
 *.so
