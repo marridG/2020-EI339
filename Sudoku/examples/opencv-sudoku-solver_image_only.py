@@ -3,7 +3,7 @@ import numpy as np
 import cv2
 
 # import modules
-from pyimagesearch.sudoku import find_puzzle, extract_digit
+from opencv_sudoku_solver.pyimagesearch.sudoku import find_puzzle, extract_digit
 
 test_image = cv2.imread("sudoku_puzzle.jpg")
 
