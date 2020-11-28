@@ -35,6 +35,10 @@ class SudokuBoard:
             print("[INFO] Board is Valid")
 
     def __check_board_is_valid__(self) -> (bool, str or None):
+        """
+        Check whether the whole board is valid
+        :return:                 True if valid, False if invalid
+        """
         for row_idx in range(self.BOARD_SIZE):
             if not self.__check_row_is_valid__(row_idx=row_idx):
                 return False, "Row #%d" % row_idx
@@ -89,6 +93,18 @@ class SudokuBoard:
         return np.unique(box).size == box.size
 
 
+class SudokuSolver:
+    def __init__(self, sudoku_board: SudokuBoard):
+        self.board_obj = sudoku_board
+        self.board = self.board_obj.board.copy()
+
+    def backtrack(self):
+        pass
+
+    def __backtrack__(self, board: np.ndarray):
+        pass
+
+
 if "__main__" == __name__:
     positions = list(range(81))
     random_seed(randrange(sys.maxsize))
@@ -135,3 +151,4 @@ if "__main__" == __name__:
     # test_board = np.array(test_board_invalid_3)
     sb = SudokuBoard(board=test_board)
     # print(sb.board)
+    solver = SudokuSolver(sudoku_board=sb)
