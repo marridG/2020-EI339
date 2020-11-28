@@ -46,9 +46,9 @@ test_board_invalid_3 = [[8, -99, -99, -99, 1, -99, -99, -99, 9],
                         [-99, 2, -99, 3, -99, 9, -99, 8, -99],
                         [3, -99, -99, -99, 5, -99, None, None, 8]]  # invalid board at box (2, 2)
 test_board = np.array(test_board_valid)
-# test_board = np.array(test_board_invalid_1)
-# test_board = np.array(test_board_invalid_2)
-# test_board = np.array(test_board_invalid_3)
+# test_board = np.array(test_board_invalid_1)  # Failed at Column #8
+# test_board = np.array(test_board_invalid_2)  # Failed at Row #8
+# test_board = np.array(test_board_invalid_3)  # Failed at Box (row, col) = (2, 2)
 sb = sudoku_board.SudokuBoard(board=test_board)
 # Stored Board
 print("Stored Board")

@@ -132,10 +132,11 @@ class SudokuBoard:
             "[Error] Given Index out of Range:" "Expected 0 <= Column < %d, Got %d" % \
             (self.BOARD_SIZE, row_idx)
 
-    def check_board_is_valid(self) -> (bool, str or None):
+    def check_board_is_valid(self) -> (bool, str) or (bool, None):
         """
         Check whether the whole board is valid
-        :return:                 True if valid, False if invalid
+        :return:                If valid, (True, None);
+                                If invalid, (False, Failure_Str)
         """
         # check each row
         for row_idx in range(self.BOARD_SIZE):
