@@ -89,3 +89,15 @@ class SudokuBoard:
         box = box[np.where(box != self.EMPTY_LABEL)]  # drop empty cells
 
         return np.unique(box).size == box.size
+
+    def __idx_row_col_2_box(self, row_idx: int, col_idx: int) -> (int, int):
+        """
+        Map indices by (row, col) to the index of the corresponding box of the cell
+        :param row_idx:         Index of the cell in the row
+        :param col_idx:         Index of the cell in the column
+        :return:                Indices of the box, by (row, col)
+        """
+        box_idx_row = row_idx // self.BOX_SIZE
+        box_idx_col = col_idx // self.BOX_SIZE
+
+        return box_idx_row, box_idx_col
