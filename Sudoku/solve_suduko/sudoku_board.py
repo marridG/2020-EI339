@@ -1,5 +1,3 @@
-from random import shuffle, seed as random_seed, randrange
-import sys
 import numpy as np
 
 
@@ -93,22 +91,7 @@ class SudokuBoard:
         return np.unique(box).size == box.size
 
 
-class SudokuSolver:
-    def __init__(self, sudoku_board: SudokuBoard):
-        self.board_obj = sudoku_board
-        self.board = self.board_obj.board.copy()
-
-    def backtrack(self):
-        pass
-
-    def __backtrack__(self, board: np.ndarray):
-        pass
-
-
 if "__main__" == __name__:
-    positions = list(range(81))
-    random_seed(randrange(sys.maxsize))
-    shuffle(positions)
     test_board_valid = [[8, -99, -99, -99, 1, -99, -99, -99, 9],
                         [-99, 5, -99, 8, -99, 7, -99, 1, -99],
                         [-99, -99, 4, -99, 9, -99, 7, -99, -99],
@@ -151,4 +134,3 @@ if "__main__" == __name__:
     # test_board = np.array(test_board_invalid_3)
     sb = SudokuBoard(board=test_board)
     # print(sb.board)
-    solver = SudokuSolver(sudoku_board=sb)
