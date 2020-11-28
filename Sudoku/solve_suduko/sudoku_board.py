@@ -3,7 +3,8 @@ from functools import reduce
 
 
 class SudokuBoard:
-    def __init__(self, board: np.ndarray, invalid_tolerable: bool = False):
+    def __init__(self, board: np.ndarray,
+                 invalid_tolerable: bool = False, show_info: bool = True):
         self.EMPTY_LABEL = -99
         self.BOARD_SIZE = 9  # size of the board: N*N
         self.MAX_NUM = 9  # max value of the numbers in the sudoku
@@ -31,7 +32,8 @@ class SudokuBoard:
         if not invalid_tolerable:
             _res, _failure = self.check_board_is_valid()
             assert _res is True, "[Error] Invalid Board: Failed at %s" % _failure
-            print("[INFO] Board is Valid")
+            if show_info:
+                print("[INFO] Board is Valid")
 
     def __check_row__is_valid_n_used_nums__(self, row_idx: int) \
             -> (bool, np.ndarray):
