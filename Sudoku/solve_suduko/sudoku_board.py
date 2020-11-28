@@ -90,7 +90,7 @@ class SudokuBoard:
 
         return np.unique(box).size == box.size
 
-    def __idx_row_col_2_box(self, row_idx: int, col_idx: int) -> (int, int):
+    def __idx_row_col_2_box__(self, row_idx: int, col_idx: int) -> (int, int):
         """
         Map indices by (row, col) to the index of the corresponding box of the cell
         :param row_idx:         Index of the cell in the row
