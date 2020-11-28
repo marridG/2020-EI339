@@ -196,3 +196,29 @@ class SudokuBoard:
         all_nums = np.arange(start=1, stop=self.MAX_NUM + 1)
         possible_nums = np.setdiff1d(all_nums, used_nums)
         return possible_nums
+
+    def output_board_as_str(self, line_prefix: str = ""):
+        """
+        Output the Sudoku board as str
+            Modified based on https://github.com/jeffsieu/py-sudoku
+        :param line_prefix      Prefix of each line, can be \t, SPACEs, etc.
+        :return:                Formatted string of the board
+        """
+        table = ''
+        width = height = self.BOX_SIZE
+        cell_length = len(str(width * height))
+        format_int = '{0:0' + str(cell_length) + 'd}'
+        for i, row in enumerate(self.board):
+            # print((('| ' + '{} ' * width) * height + '|'))
+            if i == 0:
+                table += line_prefix + \
+                         ('+-' + '-' * (cell_length + 1) * width) \
+                         * height + '+' + '\n' \
+                         + line_prefix
+            table += (('| ' + '{} ' * width) * height + '|').format(
+                *[format_int.format(x) if x != self.EMPTY_LABEL else ' ' * cell_length
+                  for x in row]) + '\n' + line_prefix
+            if i == self.board_cells_cnt - 1 or i % height == height - 1:
+                table += ('+-' + '-' * (cell_length + 1) * width) * height + '+' + '\n' \
+                         + line_prefix
+        return table

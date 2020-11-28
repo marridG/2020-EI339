@@ -51,6 +51,11 @@ test_board = np.array(test_board_valid)
 # test_board = np.array(test_board_invalid_3)
 sb = sudoku_board.SudokuBoard(board=test_board)
 # Stored Board
+print("Stored Board")
 print(sb.board)
-# Possible Numbers of a Non-empty Cell
+# Possible Numbers of an Empty Cell
+print("Possible Numbers of Empty Cell (%d, %d): " % (8, 1), end="")
 print(sb.find_cell_possible_nums(row_idx=8, col_idx=1))  # [2, 4, 9]
+# Output the Formatted Board
+print("Formatted Board (Indent by \"\\t\")")
+print(sb.output_board_as_str(line_prefix="\t"))
