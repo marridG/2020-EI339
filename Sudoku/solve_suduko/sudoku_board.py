@@ -29,34 +29,9 @@ class SudokuBoard:
 
         # Check Initialized Sudoku Board iff Invalid Boards are Tolerable
         if not invalid_tolerable:
-            _res, _failure = self.__check_board_is_valid__()
+            _res, _failure = self.check_board_is_valid()
             assert _res is True, "[Error] Invalid Board: Failed at %s" % _failure
             print("[INFO] Board is Valid")
-
-    def __check_board_is_valid__(self) -> (bool, str or None):
-        """
-        Check whether the whole board is valid
-        :return:                 True if valid, False if invalid
-        """
-        # check each row
-        for row_idx in range(self.BOARD_SIZE):
-            is_valid, _ = self.__check_row__is_valid_n_used_nums__(row_idx=row_idx)
-            if not is_valid:
-                return False, "Row #%d" % row_idx
-        # check each column
-        for col_idx in range(self.BOARD_SIZE):
-            is_valid, _ = self.__check_col__is_valid_n_used_nums__(col_idx=col_idx)
-            if not is_valid:
-                return False, "Column #%d" % col_idx
-        # check each box
-        for box_row_idx in range(self.BOX_NUM):
-            for box_col_idx in range(self.BOX_NUM):
-                is_valid, _ = self.__check_box__is_valid_n_used_nums__(
-                    box_idx_row=box_row_idx, box_idx_col=box_col_idx)
-                if not is_valid:
-                    return False, "Box (row, col) = (%d, %d)" % (box_row_idx, box_col_idx)
-
-        return True, None
 
     def __check_row__is_valid_n_used_nums__(self, row_idx: int) \
             -> (bool, np.ndarray):
@@ -156,6 +131,31 @@ class SudokuBoard:
         assert 0 <= col_idx < self.BOARD_SIZE, \
             "[Error] Given Index out of Range:" "Expected 0 <= Column < %d, Got %d" % \
             (self.BOARD_SIZE, row_idx)
+
+    def check_board_is_valid(self) -> (bool, str or None):
+        """
+        Check whether the whole board is valid
+        :return:                 True if valid, False if invalid
+        """
+        # check each row
+        for row_idx in range(self.BOARD_SIZE):
+            is_valid, _ = self.__check_row__is_valid_n_used_nums__(row_idx=row_idx)
+            if not is_valid:
+                return False, "Row #%d" % row_idx
+        # check each column
+        for col_idx in range(self.BOARD_SIZE):
+            is_valid, _ = self.__check_col__is_valid_n_used_nums__(col_idx=col_idx)
+            if not is_valid:
+                return False, "Column #%d" % col_idx
+        # check each box
+        for box_row_idx in range(self.BOX_NUM):
+            for box_col_idx in range(self.BOX_NUM):
+                is_valid, _ = self.__check_box__is_valid_n_used_nums__(
+                    box_idx_row=box_row_idx, box_idx_col=box_col_idx)
+                if not is_valid:
+                    return False, "Box (row, col) = (%d, %d)" % (box_row_idx, box_col_idx)
+
+        return True, None
 
     def check_cell_is_valid(self, row_idx: int, col_idx: int) -> bool:
         """
