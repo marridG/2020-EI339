@@ -2,6 +2,7 @@ import numpy as np
 from opencv_sudoku_solver.pyimagesearch.sudoku import find_puzzle, extract_digit, multi_img_view
 from matplotlib import pyplot as plt
 import cv2
+import typing
 
 
 class BoardImgArr:
@@ -32,7 +33,7 @@ class BoardImgArr:
 
         self.__detect_board__()
 
-    def __detect_board__(self):
+    def __detect_board__(self) -> None:
         """
         Detect board and extract cells. Update & Store:
             1. Images of cells: in self.img_cells
@@ -93,7 +94,7 @@ class BoardImgArr:
             # add the row to our cell locations
             self.cell_loc.append(row)
 
-    def show_board_cells(self):
+    def show_board_cells(self) -> None:
         """
         Show how the flattened result, as describe in __init__() self.img_cells
         :return:
@@ -108,7 +109,7 @@ class BoardImgArr:
         # fig.tight_layout()
         plt.show()
 
-    def get_cells_imgs(self):
+    def get_cells_imgs(self) -> typing.List[np.ndarray or None]:
         """
         Get the ROI images of the cells, flattened as describe in
             __init__() self.img_cells
