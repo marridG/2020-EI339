@@ -79,8 +79,8 @@ for y in range(0, 9):
             # cell for classification
             roi = cv2.resize(digit, (28, 28))
             roi = roi.astype("float") / 255.0
-            roi = img_to_array(roi)
-            roi = np.expand_dims(roi, axis=0)
+            roi = img_to_array(roi)  # (28, 28, 1)
+            roi = np.expand_dims(roi, axis=0)  # (1, 28, 28, 1)
 
             # classify the digit and update the sudoku board with the
             # prediction
