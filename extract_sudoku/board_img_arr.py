@@ -16,6 +16,7 @@ class BoardImgArr:
         :param debug_digits_extraction: Intermediate images during digits extraction
         :param debug_digits_comparison: Intermediate images of cell & extracted digit
         """
+        assert img is not None, "[Error] Input Board Image is Empty (as None)"
         self.img = img
         self.debug_board_detection = debug_board_detection
         self.debug_digits_extraction = debug_digits_extraction
@@ -41,6 +42,7 @@ class BoardImgArr:
         Detect board and extract cells. Update & Store:
             1. Images of cells: in self.img_cells
             2. Locations of cells on the board image: in self.cell_loc
+        Based on: https://www.pyimagesearch.com/2020/08/10/opencv-sudoku-solver-and-ocr/
         """
         # find the puzzle in the image and then
         puzzle_image, warped = find_puzzle(self.img, debug=self.debug_board_detection)
