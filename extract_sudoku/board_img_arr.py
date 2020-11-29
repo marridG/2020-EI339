@@ -6,20 +6,23 @@ import typing
 
 
 class BoardImgArr:
-    def __init__(self, img: np.ndarray, debug: bool = False):
+    def __init__(self, img: np.ndarray,
+                 debug_board_detection: bool = False,
+                 debug_digits_extraction: bool = False,
+                 debug_digits_comparison: bool = False):
         """
         :param img:         Input image of the board
-        :param debug:       Debug switch
+        :param debug_board_detection:   Intermediate images during board detection
+        :param debug_digits_extraction: Intermediate images during digits extraction
+        :param debug_digits_comparison: Intermediate images of cell & extracted digit
         """
         self.img = img
-        self.debug = debug
+        self.debug_board_detection = debug_board_detection
+        self.debug_digits_extraction = debug_digits_extraction
+        self.debug_digits_comparison = debug_digits_comparison
 
         self.board_cells_cnt = 9 * 9
         self.board_size = 9
-
-        self.debug_board_detection = self.debug and True
-        self.debug_digits_extraction = self.debug and False
-        self.debug_digits_comparison = self.debug and False
 
         # ROI of cells flattened to len=81:
         #   upper-left to lower-right, count columns on one each row first
