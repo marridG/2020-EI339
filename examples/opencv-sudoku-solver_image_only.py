@@ -9,10 +9,14 @@ sys.path.append(BASE_DIR)
 # import modules
 from opencv_sudoku_solver.pyimagesearch.sudoku import find_puzzle, extract_digit
 
-test_image = cv2.imread("sudoku_puzzle.jpg")
+DEBUG = True
+DEBUG_BOARD = DEBUG and True
+DEBUG_DIGITS = DEBUG and False
+
+test_image = cv2.imread("1-2__from_lower.jpg")
 
 # find the puzzle in the image
-puzzleImage, warped = find_puzzle(image=test_image, debug=True)
+puzzleImage, warped = find_puzzle(image=test_image, debug=DEBUG_BOARD)
 
 # initialize our 9x9 Sudoku board
 board = np.zeros((9, 9), dtype="int")
@@ -40,4 +44,4 @@ for y in range(0, 9):
         # crop the cell from the warped transform image and then
         # extract the digit from the cell
         cell = warped[startY:endY, startX:endX]
-        _ = extract_digit(cell, debug=True)
+        _ = extract_digit(cell, debug=DEBUG_DIGITS)
