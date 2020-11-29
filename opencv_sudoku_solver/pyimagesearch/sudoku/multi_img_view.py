@@ -47,7 +47,10 @@ def multi_img_view(images: list, subtitles: list,
 
     # Show Images & Subtitles
     for _img_idx, (_img, _img_title) in enumerate(zip(images, subtitles)):
-        ax[_img_idx].imshow(_img)
+        try:
+            ax[_img_idx].imshow(_img)
+        except TypeError:
+            pass
         ax[_img_idx].set_title(_img_title)
         ax[_img_idx].set_xticks([])
         ax[_img_idx].set_yticks([])
