@@ -1,11 +1,7 @@
 # import the necessary packages
-import os
-import sys
 import numpy as np
 import cv2
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(BASE_DIR)
 # import modules
 from opencv_sudoku_solver.pyimagesearch.sudoku import find_puzzle, extract_digit
 
