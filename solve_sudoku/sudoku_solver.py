@@ -49,14 +49,13 @@ class SudokuSolver:
         iter_obj = itertools.combinations(lst, length)
         return list(iter_obj)
 
-    def __solve__(self, board: SudokuBoard, method: str) -> (int, bool, SudokuBoard):
+    def __solve__(self, board: SudokuBoard, method: str) \
+            -> (bool, SudokuBoard) or (bool, None):
         """
         Call functions to solve (board error intolerable)
         :param board:           SudokuBoard object, board must be VALID
         :param method:          Method indicator
-        :return:                1. <int>min_emptied: -1 if valid board
-                                2. <bool>solved
-                                3. <SudokuBoard>solved board
+        :return:                <bool>solved, <SudokuBoard>solved board
         """
         methods = ["backtrack"]
         assert method in methods, \
@@ -102,7 +101,7 @@ class SudokuSolver:
                     if solved:
                         return emptied_cnt, True, solved_board
 
-    def __backtrack__(self, board: SudokuBoard):
+    def __backtrack__(self, board: SudokuBoard) -> (bool, SudokuBoard) or (bool, None):
         """
         Solve the Sudoku problem by backtracking
         :param board:           SudokuBoard object, board must be VALID
@@ -129,7 +128,8 @@ class SudokuSolver:
             in_board=to_solve_board, to_fill_idx=start_idx)
         return solved, solved_board
 
-    def __backtrack_recursion__(self, in_board: SudokuBoard, to_fill_idx: int):
+    def __backtrack_recursion__(self, in_board: SudokuBoard, to_fill_idx: int) \
+            -> (bool, SudokuBoard) or (bool, None):
         """
         Recursively backtracking
         ALERT: carefully handle referred guaranteed VALID <SudokuBoard>
