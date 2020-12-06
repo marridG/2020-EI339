@@ -49,18 +49,34 @@ class SudokuSolver:
         iter_obj = itertools.combinations(lst, length)
         return list(iter_obj)
 
-    def backtrack(self, board: SudokuBoard) -> (int, bool, SudokuBoard):
+    def __solve__(self, board: SudokuBoard, method: str) -> (int, bool, SudokuBoard):
         """
-        Backtracking approach wrapper (board error tolerable)
+        Call functions to solve (board error intolerable)
+        :param board:           SudokuBoard object, board must be VALID
+        :param method:          Method indicator
+        :return:                1. <int>min_emptied: -1 if valid board
+                                2. <bool>solved
+                                3. <SudokuBoard>solved board
+        """
+        methods = ["backtrack"]
+        assert method in methods, \
+            "[Error] Unknown Method %s. Supported: %s" % (method, ", ".join(methods))
+        if "backtrack" == method:
+            return self.__backtrack__(board=board)
+
+    def solve(self, board: SudokuBoard, method: str) -> (int, bool, SudokuBoard):
+        """
+        Approaches wrapper (board error tolerable)
         Note: Invalid boards can always be solved, when all digits are emptied
         :param board:           SudokuBoard object, board must be VALID
+        :param method:          Method indicator
         :return:                1. <int>min_emptied: -1 if valid board
                                 2. <bool>solved
                                 3. <SudokuBoard>solved board
         """
         # Try to Solve the Valid Board
-        if board.valid:
-            solved, solved_board = self.__backtrack__(board=board)
+        if board.valid is True:
+            solved, solved_board = self.__solve__(board=board, method=method)
             if solved:
                 return -1, True, solved_board
 
@@ -82,7 +98,7 @@ class SudokuSolver:
                     new_board.update_board_valid_status()
                     if not new_board.valid:
                         continue
-                    solved, solved_board = self.__backtrack__(board=new_board)
+                    solved, solved_board = self.__solve__(board=new_board, method=method)
                     if solved:
                         return emptied_cnt, True, solved_board
 

@@ -82,7 +82,7 @@ print()
 
 # === SOLVER ===
 sb_solver = sudoku_solver.SudokuSolver()
-empties_cnt, solved, solved_board = sb_solver.backtrack(board=sb)
+empties_cnt, solved, solved_board = sb_solver.solve(board=sb, method="backtrack")
 print("Solved = %d (Emptied %d Cell(s))" % (solved, empties_cnt))
 print("Solved Board:")
 print(solved_board.output_board_as_str(line_prefix="\t"))
