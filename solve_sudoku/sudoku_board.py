@@ -28,12 +28,16 @@ class SudokuBoard:
         # Ensures dtype=np.int
         self.board = self.board.astype(np.int)
 
-        # Check Initialized Sudoku Board iff Invalid Boards are Tolerable
+        # Check & Store Validation of the Initialized Sudoku Board
+        self.valid, _failure = self.check_board_is_valid()
+        # Raise Error iff Invalid Boards are Tolerable
         if not invalid_tolerable:
-            _res, _failure = self.check_board_is_valid()
-            assert _res is True, "[Error] Invalid Board: Failed at %s" % _failure
-            if show_info:
+            assert self.valid is True, "[Error] Invalid Board: Failed at %s" % _failure
+        if show_info:
+            if self.valid:
                 print("[INFO] Board is Valid")
+            else:
+                print("[INFO] Board is Invalid (Tolerated)")
 
     def __check_row__is_valid_n_used_nums__(self, row_idx: int) \
             -> (bool, np.ndarray):
@@ -133,6 +137,9 @@ class SudokuBoard:
         assert 0 <= col_idx < self.BOARD_SIZE, \
             "[Error] Given Index out of Range:" "Expected 0 <= Column < %d, Got %d" % \
             (self.BOARD_SIZE, row_idx)
+
+    def update_board_valid_status(self) -> None:
+        self.valid, _ = self.check_board_is_valid()
 
     def check_board_is_valid(self) -> (bool, str) or (bool, None):
         """

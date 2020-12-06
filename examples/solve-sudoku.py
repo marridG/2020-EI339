@@ -59,15 +59,16 @@ test_board_easy_2 = [[8, 7, 2, 4, 1, 3, 5, 6, 9],
                      [6, 8, 5, 3, 7, 9, 2, 4, None],
                      [3, 4, 1, 2, 5, 6, 9, None, 8]]  # valid to-be-filled board
 
-test_board = np.array(test_board_valid)
-# test_board = np.array(test_board_invalid_1)  # Failed at Column #8
+# test_board = np.array(test_board_valid)
+test_board = np.array(test_board_invalid_1)  # Failed at Column #8
 # test_board = np.array(test_board_invalid_2)  # Failed at Row #8
 # test_board = np.array(test_board_invalid_3)  # Failed at Box (row, col) = (2, 2)
 # test_board = np.array(test_board_easy_1)
 # test_board = np.array(test_board_easy_2)
 
 # === BOARD ===
-sb = sudoku_board.SudokuBoard(board=test_board)
+# sb = sudoku_board.SudokuBoard(board=test_board)
+sb = sudoku_board.SudokuBoard(board=test_board, invalid_tolerable=True)
 # Stored Board
 print("Stored Board:")
 print(sb.board)
@@ -81,7 +82,7 @@ print()
 
 # === SOLVER ===
 sb_solver = sudoku_solver.SudokuSolver()
-solved, solved_board = sb_solver.backtrack(board=sb, recheck=True)
-print("Solved =", solved)
+empties_cnt, solved, solved_board = sb_solver.backtrack(board=sb)
+print("Solved = %d (Emptied %d Cell(s))" % (solved, empties_cnt))
 print("Solved Board:")
 print(solved_board.output_board_as_str(line_prefix="\t"))
