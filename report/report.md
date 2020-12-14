@@ -12,7 +12,7 @@ EI339 Artificial Intelligence, 2020 Fall, SJTU
 
 - [Description](#description)
 - [Environment](#environment)
-- [Task One - OpenCV Sudoku Solver and OCR](#task-one---opencv-sudoku-solver-and-ocr)
+- [Task 1 - OpenCV Sudoku Solver and OCR](#task-1---opencv-sudoku-solver-and-ocr)
     - [Image Preprocessing](#image-preprocessing)
         - [Multi-Image View](#multi-image-view)
         - [Board Detection](#board-detection)
@@ -21,6 +21,8 @@ EI339 Artificial Intelligence, 2020 Fall, SJTU
     - [Execution](#execution)
         - [Training](#training)
         - [Puzzle Solving](#puzzle-solving)
+- [Task 2 - Sudoku Solver](#task-2---sudoku-solver)
+    - [Sudoku Board](#sudoku-board)
 
 <!-- /MarkdownTOC -->
 
@@ -28,6 +30,9 @@ EI339 Artificial Intelligence, 2020 Fall, SJTU
 
 
 <br>
+
+<div style="page-break-after: always;"></div>
+
 
 
 
@@ -56,8 +61,8 @@ EI339 Artificial Intelligence, 2020 Fall, SJTU
 
 
 
-<a id="task-one---opencv-sudoku-solver-and-ocr"></a>
-## Task One - OpenCV Sudoku Solver and OCR
+<a id="task-1---opencv-sudoku-solver-and-ocr"></a>
+## Task 1 - OpenCV Sudoku Solver and OCR
 This part is mainly based on the provided codes ([source](https://www.pyimagesearch.com/2020/08/10/opencv-sudoku-solver-and-ocr/)), the explanations of which is almost fully included in the post. For simplicity, we do not repeat details mentioned already.  
 As a matter of fact, the most helpful part may be the magic-like OpenCV operations on the original image. We take advantage of its board-detection and digit-image-extraction. As for the digit recognization, we will reconstruct another network later.
 
@@ -170,3 +175,15 @@ By executing `python train_digit_classifier.py --model output/digit_classifier_n
 #### Puzzle Solving
 By executing `python solve_sudoku_puzzle.py --model output/digit_classifier_new.h5 --image sudoku_puzzle.jpg`, we use the model trained above to solve the sample sudoku problem. The outputs (combined) are shown as follows,
 <img src="pics/1-2.PNG" alt="drawing" width="100%; margin:auto auto;"/>
+
+
+<br>
+
+<div style="page-break-after: always;"></div>
+
+
+
+<a id="task-2---sudoku-solver"></a>
+## Task 2 - Sudoku Solver
+<a id="sudoku-board"></a>
+### Sudoku Board
