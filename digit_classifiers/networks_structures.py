@@ -16,8 +16,8 @@ class LeNet5(torch.nn.Module):
         self.c3_conv = torch.nn.Conv2d(in_channels=6, out_channels=16, kernel_size=5)
         # C3 (16@10*10) -- Pooling     --> S4 (16@5*5)
         self.s4_pool = torch.nn.MaxPool2d(kernel_size=2)
-        # S4 (16@5*5)   -- FC          --> C5 (120)
-        self.c5_fc = torch.nn.Linear(in_features=16 * 5 * 5, out_features=120)
+        # S4 (16@5*5)   -- Convolution --> C5 (120@1*1)
+        self.c5_conv = torch.nn.Conv2d(in_channels=16, out_channels=120, kernel_size=5)
         # C5 (120)      -- FC          --> F6 (84)
         self.f6_fc = torch.nn.Linear(in_features=120, out_features=84)
         # F6 (84)       -- FC          --> Output (20)
@@ -28,8 +28,8 @@ class LeNet5(torch.nn.Module):
         x = self.s2_pool(x)
         x = torch.nn.functional.relu(self.c3_conv(x))
         x = self.s4_pool(x)
-        x = x.view(-1, 16 * 5 * 5)  # flatten for FC layer
-        x = torch.nn.functional.relu(self.c5_fc(x))
+        x = torch.nn.functional.relu(self.c5_conv(x))
+        x = torch.flatten(x, start_dim=1)  # flatten for FC layer
         x = torch.nn.functional.relu(self.f6_fc(x))
         x = self.out_fc(x)
 
