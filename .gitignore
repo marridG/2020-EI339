@@ -14,6 +14,9 @@ _*.*
 !/opencv_sudoku_solver/output/digit_classifier.h5
 #report/
 imgs/
+data/
+!data/*.py
+models/
 
 # C extensions
 *.so
