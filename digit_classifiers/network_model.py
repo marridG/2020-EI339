@@ -9,12 +9,12 @@ from .networks_structures import LeNet5
 
 
 class NetworkModel:
-    def __init__(self, network, pretrained_path: str = None,
+    def __init__(self, network, pre_trained_path: str = None,
                  loss_func=None, optimizer=None,
                  use_cuda: bool = False):
         """
         :param network:                 object of the target network
-        :param pretrained_path:         path to the to-load pre-trained model
+        :param pre_trained_path:         path to the to-load pre-trained model
         :param loss_func:               object of the loss function
         :param optimizer:               object of the optimizer
         :param use_cuda:                whether to use GPU
@@ -24,8 +24,8 @@ class NetworkModel:
             else torch.nn.CrossEntropyLoss()
         self.optimizer = optimizer if optimizer is not None \
             else torch.optim.SGD(params=network.parameters(), lr=1e-3, momentum=0.9)
-        if pretrained_path is not None:
-            self.__load_model__(model_full_path=pretrained_path)
+        if pre_trained_path is not None:
+            self.__load_model__(model_full_path=pre_trained_path)
         # Configure whether to use NVIDIA GPU
         self.use_cuda = (torch.cuda.is_available() and use_cuda)
         self.device = torch.device("cuda" if self.use_cuda else "cpu")
