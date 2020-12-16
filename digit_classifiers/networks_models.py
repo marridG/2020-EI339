@@ -55,7 +55,7 @@ class NetworkModel:
             loss_this_epoch_accum = 0.0
             batch_cnt = len(train_loader)
             for batch_data, batch_labels in train_loader:
-                print(batch_data.shape)
+                print(batch_data.shape)  # torch.Size([30, 1, 28, 28])
                 # copy to GPU if required
                 batch_data.to(self.device)
                 batch_labels.to(self.device)
