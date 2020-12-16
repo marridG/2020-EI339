@@ -1,6 +1,7 @@
 import os
 import numpy as np
-from opencv_sudoku_solver.pyimagesearch.sudoku import find_puzzle, extract_digit, multi_img_view
+from opencv_sudoku_solver.pyimagesearch.sudoku import \
+    find_puzzle, extract_digit, multi_img_view
 from matplotlib import pyplot as plt
 import cv2
 import typing
@@ -144,15 +145,19 @@ class BoardImgArr:
         assert self.board_cells_cnt == numbers.size, \
             "[Error] Count of Given Numbers Mismatch. Expected %d, Got %d" \
             % (self.board_cells_cnt, numbers.size)
-        self.num_cells[:, :] = numbers.reshape(shape=(self.board_size, self.board_size))
+        self.num_cells[:, :] = numbers.reshape((self.board_size, self.board_size))
         self.num_cells_updated = True
 
     def get_cells_nums(self) -> np.ndarray:
+        """
+        Get the numbers of cells, shape (board_size, board_size)
+        :return:                Numbers of cells
+        """
         assert self.num_cells_updated, "[Error] Cells' Numbers NOT Updated yet."
         return self.num_cells
 
 
 if "__main__" == __name__:
     test_image = "../imgs/sudoku_puzzle.jpg"
-    bia_obj = BoardImgArr(img_path=test_image)
+    bia_obj = BoardImgArr(img_path=test_image, roi_shape=(1, 28, 28, 1))
     bia_obj.show_board_cells()
