@@ -73,18 +73,18 @@ def __ei339_generate_raw_mappings__() -> \
         abs_path_to_tr_files = os.path.join(abs_path_to_file_folder, "training/")
         path_to_test_files = os.path.join(abs_path_to_file_folder, "testing/")
 
-        if 10 == label_num:
-            label_num = 0
+        save_label_num = 0 if 10 == label_num else label_num
+        save_label_num += 10
         # Training Data
         for file in os.listdir(abs_path_to_tr_files):
             abs_path_to_tr_file = os.path.join(abs_path_to_tr_files, file)
             train_data_map.append(abs_path_to_tr_file)
-            train_label_map.append(label_num)
+            train_label_map.append(save_label_num)
         # Test Data
         for file in os.listdir(path_to_test_files):
             abs_path_to_test_file = os.path.join(path_to_test_files, file)
             test_data_map.append(abs_path_to_test_file)
-            test_label_map.append(label_num)
+            test_label_map.append(save_label_num)
 
     train_data_map = np.array(train_data_map)  # (cnt,) <str> as <U129>
     train_label_map = np.array(train_label_map)  # (cnt,) <np.int32>
