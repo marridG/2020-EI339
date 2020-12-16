@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from opencv_sudoku_solver.pyimagesearch.sudoku import find_puzzle, extract_digit, multi_img_view
 from matplotlib import pyplot as plt
@@ -6,18 +7,29 @@ import typing
 
 
 class BoardImgArr:
-    def __init__(self, img: np.ndarray,
+    def __init__(self, img_path: str,
+                 roi_shape: typing.Tuple[int, int, int, int],
+                 norm_255: bool = True,
                  debug_board_detection: bool = False,
                  debug_digits_extraction: bool = False,
                  debug_digits_comparison: bool = False):
         """
-        :param img:         Input image of the board
+        :param img_path:                Path of the input image of the board
+        :param roi_shape:               Shape of the ROIs
+                                            required (N,H,W,C)=(1,28,28,1) by the TF approach here
+                                            required (N,C,W,H)=(1,1,28,28) by the Torch approach here
+        :param norm_255:                Whether to normalize by "img/=255."
+                                            required True by the TF approach here
+                                            required False by the Torch approach here
         :param debug_board_detection:   Intermediate images during board detection
         :param debug_digits_extraction: Intermediate images during digits extraction
         :param debug_digits_comparison: Intermediate images of cell & extracted digit
         """
-        assert img is not None, "[Error] Input Board Image is Empty (as None)"
+        assert os.path.exists(img_path), "[Error] Input Board Image NOT Found"
+        img = cv2.imread(img_path)
         self.img = img
+        self.roi_shape = roi_shape
+        self.norm_255 = norm_255
         self.debug_board_detection = debug_board_detection
         self.debug_digits_extraction = debug_digits_extraction
         self.debug_digits_comparison = debug_digits_comparison
@@ -27,7 +39,7 @@ class BoardImgArr:
 
         # ROI of cells flattened to len=81:
         #   upper-left to lower-right, count columns on one each row first
-        # None or guaranteed to be of shape (1,28,28,1)
+        # None or guaranteed to be of shape self.roi_shape
         self.img_cells = []
         # Numbers of cells: -99=Empty or <int>number
         self.num_cells = np.full((self.board_size, self.board_size), -99, dtype=np.int)
@@ -90,9 +102,9 @@ class BoardImgArr:
                     #   from tensorflow.keras.preprocessing.image import img_to_array
                     #   roi = img_to_array(roi)
                     roi = cv2.resize(digit_img, (28, 28))
-                    roi = roi.astype("float") / 255.0  # (28, 28)
-                    roi = roi.reshape((roi.shape[0], roi.shape[1], 1))  # (28, 28, 1), ***
-                    roi = np.expand_dims(roi, axis=0)  # (1, 28, 28, 1)
+                    if self.norm_255:
+                        roi = roi.astype("float") / 255.0  # (28, 28)
+                    roi = roi.reshape(self.roi_shape)
 
                     self.img_cells.append(roi)
 
@@ -141,6 +153,6 @@ class BoardImgArr:
 
 
 if "__main__" == __name__:
-    test_image = cv2.imread("../imgs/sudoku_puzzle.jpg")
-    bia_obj = BoardImgArr(img=test_image)
+    test_image = "../imgs/sudoku_puzzle.jpg"
+    bia_obj = BoardImgArr(img_pathtest_image)
     bia_obj.show_board_cells()
