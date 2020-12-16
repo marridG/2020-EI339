@@ -82,7 +82,7 @@ class SudokuSolver:
         # Empty some Cells and Try to Solve: Unsolved "Valid" Board / Invalid Board
         _, _, _, nonempty_idx_board, _ = self.__flatten_board__(board=board)
         to_empty_ref_idx = list(range(nonempty_idx_board[0].size))  # reference id, shape (nonempty_cnt,)
-        for emptied_cnt in range(1, 3):  # range(1, len(to_change_idx_ref)+1):
+        for emptied_cnt in range(1, len(to_empty_ref_idx) + 1):
             to_empty_ref_idx_comb = self.__err__generate_combinations_by_lst_num__(
                 lst=to_empty_ref_idx, length=emptied_cnt)
             # iterate to-change ref-idx combination tuples (e.g. (1,), (0,3))
