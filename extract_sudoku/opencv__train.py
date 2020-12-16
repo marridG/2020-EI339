@@ -3,7 +3,7 @@ from datetime import datetime
 
 timestamp = datetime.now().strftime("%Y%m%d%H%M%S")  # e.g. 20201129210907
 script_path = "./opencv_sudoku_solver/train_digit_classifier.py"
-output_path = "./models"
+output_path = "../models"
 model_filename_subfix = "__%s" % timestamp
 
 
