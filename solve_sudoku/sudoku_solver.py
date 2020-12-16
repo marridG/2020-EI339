@@ -83,23 +83,24 @@ class SudokuSolver:
         _, _, _, nonempty_idx_board, _ = self.__flatten_board__(board=board)
         to_empty_ref_idx = list(range(nonempty_idx_board[0].size))  # reference id, shape (nonempty_cnt,)
         for emptied_cnt in range(1, len(to_empty_ref_idx) + 1):
+            print("[INFO] \tAttempt to Solve by Changing %2d Cells" % emptied_cnt)
             to_empty_ref_idx_comb = self.__err__generate_combinations_by_lst_num__(
                 lst=to_empty_ref_idx, length=emptied_cnt)
             # iterate to-change ref-idx combination tuples (e.g. (1,), (0,3))
             for _ref_idx_tup in to_empty_ref_idx_comb:
+                new_board = deepcopy(board)
                 # iterate to-change ref-idx-s
                 for _ref_idx in _ref_idx_tup:
                     # get to-change idx of the board by reference
                     _idx_dim1 = nonempty_idx_board[0][_ref_idx]
                     _idx_dim2 = nonempty_idx_board[1][_ref_idx]
-                    new_board = deepcopy(board)
                     new_board.board[_idx_dim1][_idx_dim2] = self.board.EMPTY_LABEL
-                    new_board.update_board_valid_status()
-                    if not new_board.valid:
-                        continue
-                    solved, solved_board = self.__solve__(board=new_board, method=method)
-                    if solved:
-                        return emptied_cnt, True, solved_board
+                new_board.update_board_valid_status()
+                if not new_board.valid:
+                    continue
+                solved, solved_board = self.__solve__(board=new_board, method=method)
+                if solved:
+                    return emptied_cnt, True, solved_board
 
     def __backtrack__(self, board: SudokuBoard) -> (bool, SudokuBoard) or (bool, None):
         """
