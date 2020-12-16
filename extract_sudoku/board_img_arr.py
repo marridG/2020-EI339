@@ -154,5 +154,5 @@ class BoardImgArr:
 
 if "__main__" == __name__:
     test_image = "../imgs/sudoku_puzzle.jpg"
-    bia_obj = BoardImgArr(img_pathtest_image)
+    bia_obj = BoardImgArr(img_path=test_image)
     bia_obj.show_board_cells()
