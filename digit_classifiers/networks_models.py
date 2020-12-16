@@ -14,7 +14,7 @@ class NetworkModel:
                  use_cuda: bool = False):
         """
         :param network:                 object of the target network
-        :param pre_trained_path:         path to the to-load pre-trained model
+        :param pre_trained_path:        path to the to-load pre-trained model
         :param loss_func:               object of the loss function
         :param optimizer:               object of the optimizer
         :param use_cuda:                whether to use GPU
@@ -24,15 +24,16 @@ class NetworkModel:
             else torch.nn.CrossEntropyLoss()
         self.optimizer = optimizer if optimizer is not None \
             else torch.optim.SGD(params=network.parameters(), lr=1e-3, momentum=0.9)
+        self.is_trained_cnt = 0  # number of times self.train() is called
         if pre_trained_path is not None:
             self.__load_model__(model_full_path=pre_trained_path)
+
         # Configure whether to use NVIDIA GPU
         self.use_cuda = (torch.cuda.is_available() and use_cuda)
         self.device = torch.device("cuda" if self.use_cuda else "cpu")
         self.network.to(self.device)
 
-        self.is_trained_cnt = 0  # number of times self.train() is called
-        print("[INFO] Trainer Initiated")
+        print("[INFO] Model Initiated")
 
     def train(self, train_loader: DataLoader, num_epoch: int = 10) \
             -> (np.ndarray, np.ndarray):
@@ -54,6 +55,7 @@ class NetworkModel:
             loss_this_epoch_accum = 0.0
             batch_cnt = len(train_loader)
             for batch_data, batch_labels in train_loader:
+                print(batch_data.shape)
                 # copy to GPU if required
                 batch_data.to(self.device)
                 batch_labels.to(self.device)
@@ -85,6 +87,12 @@ class NetworkModel:
 
         self.is_trained_cnt += num_epoch
         return np.array(loss_each_epoch), np.array(accuracy_each_epoch)
+
+    def predict(self, img: torch.Tensor) -> int:
+        assert (1, 1, 28, 28) == img.shape, \
+            "[Error] Image Shape Mismatch. " \
+            "Expected (N,C,W,H)=(1,1,28,28), Got %s" % (str(img.shape))
+        return self.network(img).argmax(axis=1).item()
 
     def __load_model__(self, model_full_path: str) -> None:
         """
