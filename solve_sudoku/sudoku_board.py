@@ -5,6 +5,11 @@ from functools import reduce
 class SudokuBoard:
     def __init__(self, board: np.ndarray,
                  invalid_tolerable: bool = False, show_info: bool = True):
+        """
+        :param board:           Input numbers of the board, of shape (BOARD_SIZE,BOARD_SIZE)
+        :param invalid_tolerable: Flag, whether to tolerate invalid input board
+        :param show_info:       Flag, wehther to show hint info
+        """
         self.EMPTY_LABEL = -99
         self.BOARD_SIZE = 9  # size of the board: N*N
         self.MAX_NUM = 9  # max value of the numbers in the sudoku
