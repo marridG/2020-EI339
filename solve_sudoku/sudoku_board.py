@@ -129,7 +129,7 @@ class SudokuBoard:
         Check whether a input index (row, col) is valid
         :param row_idx:         Input index of the to-be-checked cell in the row
         :param col_idx:         Input index of the to-be-checked cell in the column
-        :return:                True if valid, False if invalid
+        :return:
         """
         assert 0 <= row_idx < self.BOARD_SIZE, \
             "[Error] Given Index out of Range:" "Expected 0 <= Row < %d, Got %d" % \
@@ -141,6 +141,7 @@ class SudokuBoard:
     def update_board_valid_status(self) -> None:
         """
         Update the status of validation of the board
+        :return:
         """
         self.valid, _ = self.check_board_is_valid()
 
