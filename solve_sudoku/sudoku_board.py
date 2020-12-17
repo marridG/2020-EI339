@@ -139,6 +139,9 @@ class SudokuBoard:
             (self.BOARD_SIZE, row_idx)
 
     def update_board_valid_status(self) -> None:
+        """
+        Update the status of validation of the board
+        """
         self.valid, _ = self.check_board_is_valid()
 
     def check_board_is_valid(self) -> (bool, str) or (bool, None):
