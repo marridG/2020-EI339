@@ -10,6 +10,7 @@ output_path = "./models"
 
 
 def train(model_path: str = output_path, dataset_settings: list = None,
+          num_classes: int = 20,
           batch_size: int = 30, lr: float = 1e-3, epoch: int = 1):
     print("Hyper-parameters: batch_size=%d, lr=%.5f, epoch=%d" % (batch_size, lr, epoch))
 
@@ -58,7 +59,7 @@ def train(model_path: str = output_path, dataset_settings: list = None,
         #  "train_loss": np.array([0.3, 0.2, 0.1]), "train_acc": np.array([70.4, 80.1, 90.5]),
         #  "test_acc": 80.1, },
     ]
-
+    
     for (train_name, test_name) in dataset_settings:
         assert train_name in dataset_labels, \
             "[Error] Invalid Train Name \"%s\". Supported are %s" \
@@ -67,10 +68,11 @@ def train(model_path: str = output_path, dataset_settings: list = None,
             "[Error] Invalid Test Name \"%s\". Supported are %s" \
             % (test_name, ", ".join(dataset_labels))
 
-        print("Train upon %s, Test upon %s" % (train_name, test_name))
+        print("Train upon %s, Test upon %s\n\tbs=%d, lr=%.5f, epoch=%d"
+              % (train_name, test_name, batch_size, lr, epoch))
         train_loader = dataset_label_to_loader["train"][train_name]
         test_loader = dataset_label_to_loader["test"][test_name]
-        network = networks_structures.LeNet5(num_classes=20)
+        network = networks_structures.LeNet5(num_classes=num_classes)
         model = networks_models.NetworkModel(network=network,
                                              optimizer=torch.optim.SGD(
                                                  params=network.parameters(), lr=lr, momentum=0.9))
@@ -89,7 +91,7 @@ def train(model_path: str = output_path, dataset_settings: list = None,
         report.append({"train_set": train_name, "test_set": test_name,
                        "model_fn": output_model_fn,
                        "batch_size": batch_size, "lr": lr, "epoch": epoch,
-                       "train_loss": train_loss, "train_acc": train_acc,
+                       "train_loss": train_loss.tolist(), "train_acc": train_acc.tolist(),
                        "test_acc": test_acc, })
     return report
 
