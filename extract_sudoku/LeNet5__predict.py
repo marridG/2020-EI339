@@ -25,18 +25,17 @@ class Predict:
     def predict(self, roi: np.ndarray):
         """
         Predict the number in the given region
-        :param roi:         Region-of-Interest, should be of shape (N,C,W,H)=(1,1,28,28)
+        :param roi:         Region-of-Interest, should be of shape (28, 28)
         :return:            Prediction
         """
-        assert (1, 1, 28, 28) == roi.shape, \
-            "[Error] ROI Shape Mismatch. Expected (1, 1, 28, 28), Got %s" % (str(roi.shape))
-        roi = roi.reshape(28, 28)
+        assert (28, 28) == roi.shape, \
+            "[Error] ROI Shape Mismatch. Expected (28, 28), Got %s" % (str(roi.shape))
         img = self.transform(roi)
-        img = img.reshape(1, 1, 28, 28).double()
+        img = img.reshape(1, 1, 28, 28).double()  # (N,C,W,H)=(1,1,28,28)
         return self.model.predict(img=img)
 
 
 if "__main__" == __name__:
-    pred_obj = Predict(model_path="../models/LeNet5__lr=0.001__epoch=1.pth")
+    pred_obj = Predict(model_path="../models/LeNet5__lr=0.00100__epoch=10__batch_size=32__epoch=10.pth")
     pred = pred_obj.predict(roi=np.random.random((28, 28)))
     print(pred)

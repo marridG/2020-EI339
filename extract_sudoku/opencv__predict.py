@@ -12,12 +12,12 @@ class Predict:
     def predict(self, roi: np.ndarray):
         """
         Predict the number in the given region
-        :param roi:         Region-of-Interest, should be of shape (1,28,28,1)
+        :param roi:         Region-of-Interest, should be of shape (28,28)
         :return:            Prediction
         """
-        assert (1, 28, 28, 1) == roi.shape, \
-            "[Error] ROI Shape Mismatch. Expected (1, 28, 28, 1), Got %s" % (str(roi.shape))
-
+        assert (28, 28) == roi.shape, \
+            "[Error] ROI Shape Mismatch. Expected (28, 28), Got %s" % (str(roi.shape))
+        roi = roi.reshape((1, 28, 28, 1))  # (N,H,W,C)=(1,28,28,1)
         return self.model.predict(roi).argmax(axis=1)[0]
 
 

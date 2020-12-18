@@ -9,7 +9,7 @@ model_path = "../models/opencv__20201216224246.h5"
 
 test_image = "../imgs/sudoku_puzzle.jpg"
 bd_img_arr_obj = board_img_arr.BoardImgArr(
-    img_path=test_image, roi_shape=(1, 28, 28, 1), norm_255=True)
+    img_path=test_image, roi_shape=(28, 28), norm_255=True)
 # bd_img_arr_obj.show_board_cells()
 cells_img = bd_img_arr_obj.get_cells_imgs()
 model_predictor = opencv__predict.Predict(model_path=model_path)

@@ -9,7 +9,7 @@ import typing
 
 class BoardImgArr:
     def __init__(self, img_path: str,
-                 roi_shape: typing.Tuple[int, int, int, int],
+                 roi_shape: typing.Tuple[int, int],
                  norm_255: bool = True,
                  debug_board_detection: bool = False,
                  debug_digits_extraction: bool = False,
@@ -17,8 +17,6 @@ class BoardImgArr:
         """
         :param img_path:                Path of the input image of the board
         :param roi_shape:               Shape of the ROIs
-                                            required (N,H,W,C)=(1,28,28,1) by the TF approach here
-                                            required (N,C,W,H)=(1,1,28,28) by the Torch approach here
         :param norm_255:                Whether to normalize by "img/=255."
                                             required True by the TF approach here
                                             required False by the Torch approach here
