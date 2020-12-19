@@ -82,8 +82,7 @@ test_acc_bs = []
 for _bs_val in BS_VALUES:
     report = json.load(open(REPORTS_FN_TPL % (_bs_val, lr, ep), "r"))[0]
     test_acc_bs.append(report["test_acc"])
-plt.plot(BS_VALUES, test_acc_bs, linewidth=2)
-plt.scatter(BS_VALUES, test_acc_bs)
+plt.plot(BS_VALUES, test_acc_bs, marker="o", linewidth=2)
 plt.xlabel("BatchSize Values"), plt.ylabel("Test Accuracy / %")
 plt.title("LearningRate=%.5f, Epoch=%d, Train&Test=%s\nBatchSize Values=%r"
           % (lr, ep, d_set, BS_VALUES),
@@ -101,8 +100,7 @@ test_acc_ep = []
 for _ep_val in EPOCH_VALUES:
     report = json.load(open(REPORTS_FN_TPL % (bs, lr, _ep_val), "r"))[0]
     test_acc_ep.append(report["test_acc"])
-plt.plot(EPOCH_VALUES, test_acc_ep, linewidth=2)
-plt.scatter(EPOCH_VALUES, test_acc_ep)
+plt.plot(EPOCH_VALUES, test_acc_ep, marker="o", linewidth=2)
 plt.xlabel("Epoch Values"), plt.ylabel("Test Accuracy / %")
 # plt.title("BatchSize=%d, LearningRate=%.5f, Epoch=%d, Train&Test=%s" % (bs, lr, ep, d_set[0]),
 #           fontsize=9)
@@ -127,8 +125,7 @@ for _lr_val in LR_VALUES:
 # IV-1: Test Acc <-> LR
 plt.close("all")
 fig = plt.figure()
-plt.plot(LR_VALUES, test_acc_lr, linewidth=2)
-plt.scatter(LR_VALUES, test_acc_lr)
+plt.plot(LR_VALUES, test_acc_lr, marker="o", linewidth=2)
 plt.axhline(y=100, linestyle="--", color="grey")
 plt.xlabel("LearningRate Values"), plt.ylabel("Test Accuracy / %")
 plt.title("BatchSize=%d, Epoch=%d, Train&Test=%s\nLearningRate Values=%r"
