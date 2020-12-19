@@ -7,10 +7,11 @@ from .sudoku_board import SudokuBoard
 
 
 class SudokuSolver:
-    def __init__(self):
+    def __init__(self, max_err: int = 5):
         # Initiate with empty SudokuBoard, to get constants only
         self.board = SudokuBoard(board=np.full((9, 9), -99, dtype=np.int),
                                  invalid_tolerable=False, show_info=False)
+        self.max_err = 5
 
     def __flatten_board__(self, board: SudokuBoard) \
             -> (np.ndarray,
@@ -82,7 +83,7 @@ class SudokuSolver:
         # Empty some Cells and Try to Solve: Unsolved "Valid" Board / Invalid Board
         _, _, _, nonempty_idx_board, _ = self.__flatten_board__(board=board)
         to_empty_ref_idx = list(range(nonempty_idx_board[0].size))  # reference id, shape (nonempty_cnt,)
-        for emptied_cnt in range(1, len(to_empty_ref_idx) + 1):
+        for emptied_cnt in range(1, min(self.max_err + 1, len(to_empty_ref_idx) + 1)):
             print("[INFO] \tAttempt to Solve by Changing %2d Cells" % emptied_cnt)
             to_empty_ref_idx_comb = self.__err__generate_combinations_by_lst_num__(
                 lst=to_empty_ref_idx, length=emptied_cnt)
@@ -101,6 +102,7 @@ class SudokuSolver:
                 solved, solved_board = self.__solve__(board=new_board, method=method)
                 if solved:
                     return emptied_cnt, True, solved_board
+        return 0, False, None
 
     def __backtrack__(self, board: SudokuBoard) -> (bool, SudokuBoard) or (bool, None):
         """
