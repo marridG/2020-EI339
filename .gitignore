@@ -17,6 +17,7 @@ imgs/
 data/
 !data/*.py
 models/
+*.json
 
 # C extensions
 *.so
