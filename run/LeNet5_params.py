@@ -134,7 +134,7 @@ plt.title("BatchSize=%d, Epoch=%d, Train&Test=%s\nLearningRate Values=%r"
 fig.suptitle("Test Accuracies of Different LearningRate Values")
 plt.savefig(os.path.join(PLOTS_PATH, "lr_test_acc.png"), dpi=PLOTS_SAVE_DPI)
 plt.show() if PLOTS_SHOW else print(end="")
-# IV-2: Train Loss <-> LR
+# IV-2: Train Loss <-> Epoch w.r.t. LR
 plt.close("all")
 fig = plt.figure()
 for _lr_val, _train_loss in zip(LR_VALUES, train_loss_ep__lrs):
@@ -147,7 +147,7 @@ fig.suptitle("Train Loss each Epoch of Different LearningRate Values")
 plt.legend()
 plt.savefig(os.path.join(PLOTS_PATH, "lr_train_loss.png"), dpi=PLOTS_SAVE_DPI)
 plt.show() if PLOTS_SHOW else print(end="")
-# IV-3: Train Acc <-> LR
+# IV-3: Train Acc <-> Epoch w.r.t LR
 plt.close("all")
 fig = plt.figure()
 for _lr_val, _train_acc in zip(LR_VALUES, train_acc_ep__lrs):
@@ -160,6 +160,21 @@ plt.title("BatchSize=%d, Epoch=%d, Train&Test=%s\nLearningRate Values=%r"
 fig.suptitle("Train Accuracy each Epoch of Different LearningRate Values")
 plt.legend()
 plt.savefig(os.path.join(PLOTS_PATH, "lr_train_acc.png"), dpi=PLOTS_SAVE_DPI)
+plt.show() if PLOTS_SHOW else print(end="")
+# IV-3: Last Train Acc - Test Acc <-> LR
+plt.close("all")
+fig = plt.figure()
+diff_tr_test_acc = []
+for _train_acc, _test_acc in zip(train_acc_ep__lrs, test_acc_lr):
+    diff_tr_test_acc.append(_train_acc[-1] - _test_acc)
+plt.plot(LR_VALUES, diff_tr_test_acc, color="grey", marker="o", linewidth=2)
+# plt.axhline(y=0, linestyle="--", color="grey")
+plt.xlabel("LearningRate Values"), plt.ylabel("Difference of Train and Test Accuracy / %")
+plt.title("BatchSize=%d, Epoch=%d, Train&Test=%s\nLearningRate Values=%r"
+          % (bs, ep, d_set, LR_VALUES),
+          fontsize=9)
+fig.suptitle("Difference of Train and Test Accuracy of Different LearningRate Values")
+plt.savefig(os.path.join(PLOTS_PATH, "lr_diff_train_test_acc.png"), dpi=PLOTS_SAVE_DPI)
 plt.show() if PLOTS_SHOW else print(end="")
 
 print("All Plots Saved")
