@@ -18,15 +18,20 @@ EI339 Artificial Intelligence, 2020 Fall, SJTU
         - [Board Detection](#board-detection)
         - [Digits Extraction](#digits-extraction)
     - [Neural Network - `SudokuNet`](#neural-network---sudokunet)
-    - [Execution](#execution)
+    - [Execution - OpenCV Sudoku Solver](#execution---opencv-sudoku-solver)
         - [Training](#training)
         - [Puzzle Solving](#puzzle-solving)
 - [Task 2 - Sudoku Solver](#task-2---sudoku-solver)
     - [Sudoku Board](#sudoku-board)
     - [Sudoku Solver](#sudoku-solver)
         - [Error Tolerable Solver](#error-tolerable-solver)
-    - [Execution](#execution-1)
+    - [Execution - Sudoku Board and Solver](#execution---sudoku-board-and-solver)
 - [Task 3 - LeNet-5](#task-3---lenet-5)
+    - [Data Loader](#data-loader)
+    - [Execution - Hyper-Parameters of Training](#execution---hyper-parameters-of-training)
+- [Execution - Classifiers + Solver](#execution---classifiers--solver)
+        - [SudokuNet + Solver](#sudokunet--solver)
+        - [LeNet-5 + Solver](#lenet-5--solver)
 - [Appendix](#appendix)
     - [Multi-Image View Implementation](#multi-image-view-implementation)
     - [Sudoku Board Implementation](#sudoku-board-implementation)
@@ -68,12 +73,22 @@ EI339 Artificial Intelligence, 2020 Fall, SJTU
 <br>
 
 
+<div style="page-break-after: always;"></div>
+
+
+
+
+
+
 
 <a id="task-1---opencv-sudoku-solver-and-ocr"></a>
 ## Task 1 - OpenCV Sudoku Solver and OCR
 This part is mainly based on the provided codes ([source](https://www.pyimagesearch.com/2020/08/10/opencv-sudoku-solver-and-ocr/)), the explanations of which is almost fully included in the post. For simplicity, we do not repeat details mentioned already.  
 As a matter of fact, the most helpful part may be the magic-like OpenCV operations on the original image. We take advantage of its board-detection and digit-image-extraction. As for the digit recognization, we will reconstruct another network later.
 
+
+
+<br>
 
 <a id="image-preprocessing"></a>
 ### Image Preprocessing
@@ -94,9 +109,10 @@ find_puzzle(image: np.ndarray, debug: bool = False) -> (np.ndarray, np.ndarray)
 ```
 By changing popping out debug images to adding to multi-image-view group, for the sample image, we may get the intermediate images, as,
 
-
 <img src="pics/0-1.PNG" alt="drawing" width="60%; margin:0 auto;"/>
 
+
+<br>
 
 <a id="digits-extraction"></a>
 #### Digits Extraction
@@ -109,14 +125,22 @@ By changing popping out debug images to adding to multi-image-view group, for th
 
 <img src="pics/0-2.PNG" alt="drawing" width="90%; margin:0 auto;"/>
 
+<br>
+
 
 <a id="neural-network---sudokunet"></a>
 ### Neural Network - `SudokuNet`
 The architecture of `SudokuNet`, implemented in `/opencv-sudoku-solver/pyimagesearch/models/sudokunet.py`, is depicted as follows, (generated using [tools](http://alexlenail.me/NN-SVG/AlexNet.html))
+
 <img src="pics/0-3.PNG" alt="drawing" width="100%; margin:0 auto;"/>
 
-<a id="execution"></a>
-### Execution
+
+
+<br>
+
+
+<a id="execution---opencv-sudoku-solver"></a>
+### Execution - OpenCV Sudoku Solver
 <a id="training"></a>
 #### Training
 By executing `python train_digit_classifier.py --model output/digit_classifier_new.h5`, we get the following outputs,
@@ -126,6 +150,11 @@ By executing `python train_digit_classifier.py --model output/digit_classifier_n
 #### Puzzle Solving
 By executing `python solve_sudoku_puzzle.py --model output/digit_classifier_new.h5 --image sudoku_puzzle.jpg`, we use the model trained above to solve the sample sudoku problem. The outputs (combined) are shown as follows,
 <img src="pics/1-2.PNG" alt="drawing" width="100%; margin:0 auto;"/>
+
+
+
+
+
 
 
 <br>
@@ -148,10 +177,16 @@ Intuitively, we may divide the task into two parts,
 Both parts are introduced below.
 
 
+
+<br>
+
+
 <a id="sudoku-board"></a>
 ### Sudoku Board
 The basic structure of the board class, implemented in `/solve-sudoku/sudoku_board.py`, is given in [Appendix: Sudoku Board Implementation](#sudoku-board-implementation)
 
+
+<br>
 
 
 <a id="sudoku-solver"></a>
@@ -187,23 +222,100 @@ The approach is somehow straightforward, as,
     * Notice that, a solution can always be found, since, in the worst case, we may empty all nonempty cells (resulting in "solving" a completely empty board).
 
 
-<a id="execution-1"></a>
-### Execution
+<br>
+
+<a id="execution---sudoku-board-and-solver"></a>
+### Execution - Sudoku Board and Solver
 As depicted in the following figure, given an invalid board as in the left, we may change one cell to get a solution as in the right.  
-<img src="pics/2-1.PNG" alt="drawing" width="80%; margin:0 auto;"/>
+<img src="pics/2-1_err.PNG" alt="drawing" width="80%; margin:0 auto;"/>
+
+
+
+
 
 
 
 <br>
 
 <div style="page-break-after: always;"></div>
+
+
+
 <a id="task-3---lenet-5"></a>
 ## Task 3 - LeNet-5
-Based on `LeCun, Yann, Léon Bottou, Yoshua Bengio, and Patrick Haffner. "Gradient-based learning applied to document recognition." Proceedings of the IEEE 86, no. 11 (1998): 2278-2324`, we may implement the proposed LeNet-5 structure.
+Based on `LeCun, Yann, Léon Bottou, Yoshua Bengio, and Patrick Haffner. "Gradient-based learning applied to document recognition." Proceedings of the IEEE 86, no. 11 (1998): 2278-2324`, we may implement the proposed LeNet-5 structure, as illustrated in the figure below,
 
 <img src="pics/3-1.PNG" alt="drawing" width="100%; margin:0 auto;"/>
 
+In modern frameworks, some tricks of `LeNet-5` (like layer $C3$, originally proposed due to the computation limits that time) are unnecessary at all. Thus, we may further simplify the network connections and add nonlinear activations (say, ReLU) for better performance.
 
+To get familiar with `PyTorch`, LeNet-5 is implemented in the framework of `PyTorch` from scratch, instead of in `TensorFlow` based on the [Network `SudokuNet` of the post](#neural-network---sudokunet).
+
+
+<br>
+
+
+<a id="data-loader"></a>
+### Data Loader
+To feed the training data and prepare the test data, i.e., while combining datasets `MNIST` and `EI339`, where `EI339` is the dataset of handwritten Chinese numbers (1-10) created by all students in the course, notice that,
+
+* Even if instructed, the idea of **dividing** raw `EI339` dataset images only according to student-ID is **far from reasonable**. 
+    - The division is done as,
+        + All the students (denote as set $S$) are divided into two non-intersect subsets, say $A, B \subset S$, $A+B=S$.
+        + The training set is constructed only by all the images from students in subset $A$.
+        + The test set is constructed only by all the images from students in subset $B$.
+    - However, intuitively, there are apparent problems. 
+        + Suppose student $b \in B$. Thus, images from $b$ are all categorized as test set.
+        + As a result, no patterns of B's handwriting can be learned in the training, which makes the prediction almost meaningless.
+        + After all, we are conducting the traditional task of number classifications, instead of real-time predictions, where future input samples cannot be estimated.
+* For better performance, **several shuffles** are done, as,
+    - shuffle the raw images of `EI339` before constructing the dataset file
+    - shuffle the concatenated data from `MNIST` and `EI339` before constructing the combined dataset file
+    - At the same time, the load of dataset files are remained to be flagged with shuffle enabled.
+
+
+<br>
+
+<a id="execution---hyper-parameters-of-training"></a>
+### Execution - Hyper-Parameters of Training
+
+
+
+
+
+
+<div style="page-break-after: always;"></div>
+
+
+
+<a id="execution---classifiers--solver"></a>
+## Execution - Classifiers + Solver
+<a id="sudokunet--solver"></a>
+#### SudokuNet + Solver
+By connecting the SudokuNet model with the solver, we may get the following test result,  
+(*left*: test Sudoku image; *middle & right*: results)  
+<img src="pics/4-1_opencv.png" alt="drawing" width="100%; margin:0 auto;"/>
+
+From which, 
+
++ 4 cells are classified wrongly.
++ At least 4 cells should be emptied to get a solution.
+
+
+
+<br>
+
+
+<a id="lenet-5--solver"></a>
+#### LeNet-5 + Solver
+By connecting the LeNet-5 model (trained with BatchSize=32, LearningRate=0.001, Epoch=10) with the solver, we may get the following test result,  
+(*left*: test Sudoku image; *middle & right*: results)  
+<img src="pics/4-2_lenet.png" alt="drawing" width="100%; margin:0 auto;"/>
+
+From which, 
+
++ 4 cells are classified wrongly, among which not all are the same as those by SudokuNet.
++ At least 4 cells should be emptied to get a solution.
 
 
 
