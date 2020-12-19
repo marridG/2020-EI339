@@ -31,6 +31,8 @@ EI339 Artificial Intelligence, 2020 Fall, SJTU
     - [Execution - Hyper-Parameters of Training](#execution---hyper-parameters-of-training)
 - [Execution - Classifiers + Solver](#execution---classifiers--solver)
         - [SudokuNet + Solver](#sudokunet--solver)
+            - [Single Test Image](#single-test-image)
+            - [Multiple Test Images](#multiple-test-images)
         - [LeNet-5 + Solver](#lenet-5--solver)
 - [Appendix](#appendix)
     - [Multi-Image View Implementation](#multi-image-view-implementation)
@@ -278,8 +280,49 @@ To feed the training data and prepare the test data, i.e., while combining datas
 
 <a id="execution---hyper-parameters-of-training"></a>
 ### Execution - Hyper-Parameters of Training
+**Firstly**, how the LeNet-5 model learns the features of the input training data.  
+As is shown in the below figure (invisible elements are of values exactly 0),
+
++ The overall learning of any of `MNIST`, `EI339` and `MNIST+EI339` is satisfactory enough.
++ As expected, the features of digits (represented by `MNIST`) and Chinese numbers (represented by `EI339`) are quite different, resulting in extremely low test accuracies, as 0.
+
+<img src="pics/5-1_datasets.png" alt="drawing" width="60%; margin:0 auto;"/>
 
 
+**Secondly**, the impact of `BatchSize` and `Epoch` values on the test accuracies.  
+As is shown in the figure below *(left: `BatchSize`; right: `Epoch`)*, there are,
+
++ As expected, the larger the `BatchSize`, the lower the overall test accuracies are. However, quite intuitively, the smaller the `BatchSize`, the more time the training consumes. Thus, an intermediate value should be chosen. Commonly, values of about 30 are selected for the image classification tasks.
++ As expected, the larger the `Epoch`, the higher the overall test accuracies are. Similarly, large `Epoch` values results in longer training time. Proper values depend on whether a fine-grained model is required.  
+<img src="pics/5-2&3_bs&ep.png" alt="drawing" width="100%; margin:0 auto;"/>
+<!-- <img src="pics/5-2_batch_size.png" alt="drawing" width="60%; margin:0 auto;"/>
+<img src="pics/5-3_epoch.png" alt="drawing" width="60%; margin:0 auto;"/> -->
+
+
+
+**Thirdly**, the impact of `LearningRate` values on the train and test results.  
+As is shown in the figure below *(left: train loss; right: train accuracy tested upon training set after each training epoch)*, we have the following observations, (from which the major training babysitting is done)
+
++ As expected, proper `LearningRate` values (e.g. `5e-3, 1e-3`, etc.) result in a decreasing train loss.
++ `LearningRate` values (`1e-1, 5e-2`) are too large, resulting in bad loss convergence (in an increasing trend) and accuracy (in a decreasing trend).
++ Among the remaining `LearningRate` values (`1e-2, 5e-3, 1e-3, 5e-4, 1e-4`), the loss and accuracy curves are all not too steep or too shallow. Thus, with the execution time being taken into consideration, we may select any of them. Notice that,
+    * A steep curve indicate a proper but still too large `LearningRate`.
+    * A shallow curve indicate a proper but still too small `LearningRate`.
+
+<img src="pics/5-4&5_lr_train_acc&loss.png" alt="drawing" width="100%; margin:0 auto;"/>
+<!-- <img src="pics/5-4_lr_train_acc.png" alt="drawing" width="60%; margin:0 auto;"/>
+<img src="pics/5-5_lr_train_loss.png" alt="drawing" width="60%; margin:0 auto;"/> -->
+
+
+Meanwhile, we may decide `LearningRate` further based on the trends shown in the below figure *(left: train loss; right: train accuracy tested upon training set after each training epoch)*, as, 
+
++ (From left) too large `LearningRate` values result in low test accuracies.
++ (From left) too small `LearningRate` values may lead to too slow learning updates to acquire most features in the given epochs.
++ (From right) the trained model demonstrates big gap between validation on training and test dataset, indicating over-fitting, which is quite comprehensive and supports the [previous argument about the bad data division](#data-loader)
+
+<img src="pics/5-6&7_lr_test_acc_&_ diff_train_test_acc.png" alt="drawing" width="100%; margin:0 auto;"/>
+<!-- <img src="pics/5-6_lr_test_acc.png" alt="drawing" width="60%; margin:0 auto;"/>
+<img src="pics/5-7_lr_diff_train_test_acc.png" alt="drawing" width="60%; margin:0 auto;"/> -->
 
 
 
@@ -290,10 +333,30 @@ To feed the training data and prepare the test data, i.e., while combining datas
 
 <a id="execution---classifiers--solver"></a>
 ## Execution - Classifiers + Solver
+
+Here we test how either of the two classifiers works together with the solver by,
+
++ Run on the same test image used in the post of the OpenCV approach.
++ Run on images of Sudoku problems captured by the author, with details given as,
+    * purpose: analyze the overall effectiveness of using networks to extract sudoku boards (thus, and for economical concerns, for each image, at most 5 cells are allowed to be changed to reach a solution)
+    * 100 images altogether
+        - from 20 boards
+        - each board from five angles of views: bird-view, lower, left, upper and right
+    * all problems from the book `《全民数独 2 初级篇》 马荣鸿 吉林大学出版社`
+    * images preview illustrated in the following figure,
+
+<img src="pics/6-1_img_prev.png" alt="drawing" width="100%; margin:0 auto;"/>
+
+
+
+<br>
+
+
 <a id="sudokunet--solver"></a>
 #### SudokuNet + Solver
-By connecting the SudokuNet model with the solver, we may get the following test result,  
-(*left*: test Sudoku image; *middle & right*: results)  
+<a id="single-test-image"></a>
+##### Single Test Image
+By connecting the SudokuNet model with the solver, we may get the following test results, *(*left*: test Sudoku image; *middle & right*: results)*  
 <img src="pics/4-1_opencv.png" alt="drawing" width="100%; margin:0 auto;"/>
 
 From which, 
@@ -302,14 +365,23 @@ From which,
 + At least 4 cells should be emptied to get a solution.
 
 
+<a id="multiple-test-images"></a>
+##### Multiple Test Images
+By connecting the SudokuNet model with the solver, we may get the following test results upon the 100 images describe above,  
+<img src="pics/6-2_opencv_num_changed.png" alt="drawing" width="60%; margin:0 auto;"/>
+
+From which, 
+
++ Unsolved ratios are high, indicating that most board images are facing the problem of incorrect digit recognition. Since the number of filled cells is big, more errors appear and less possible the board can be solved within 5 changes of cells.
++ Angles of lower (dense distribution) and right (higher probability of a solution) are more preferable.
+
+
 
 <br>
 
-
 <a id="lenet-5--solver"></a>
 #### LeNet-5 + Solver
-By connecting the LeNet-5 model (trained with BatchSize=32, LearningRate=0.001, Epoch=10) with the solver, we may get the following test result,  
-(*left*: test Sudoku image; *middle & right*: results)  
+By connecting the LeNet-5 model (trained with BatchSize=32, LearningRate=0.001, Epoch=10) with the solver, we may get the following test results, *(*left*: test Sudoku image; *middle & right*: results)*  
 <img src="pics/4-2_lenet.png" alt="drawing" width="100%; margin:0 auto;"/>
 
 From which, 
