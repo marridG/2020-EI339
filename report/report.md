@@ -30,10 +30,13 @@ EI339 Artificial Intelligence, 2020 Fall, SJTU
     - [Data Loader](#data-loader)
     - [Execution - Hyper-Parameters of Training](#execution---hyper-parameters-of-training)
 - [Execution - Classifiers + Solver](#execution---classifiers--solver)
-        - [SudokuNet + Solver](#sudokunet--solver)
-            - [Single Test Image](#single-test-image)
-            - [Multiple Test Images](#multiple-test-images)
-        - [LeNet-5 + Solver](#lenet-5--solver)
+    - [SudokuNet + Solver](#sudokunet--solver)
+        - [Single Test Image](#single-test-image)
+        - [Multiple Test Images](#multiple-test-images)
+    - [LeNet-5 + Solver](#lenet-5--solver)
+        - [Single Test Image](#single-test-image-1)
+        - [Multiple Test Images](#multiple-test-images-1)
+- [Execution - EI339 Test Sudoku Boards](#execution---ei339-test-sudoku-boards)
 - [Appendix](#appendix)
     - [Multi-Image View Implementation](#multi-image-view-implementation)
     - [Sudoku Board Implementation](#sudoku-board-implementation)
@@ -150,7 +153,7 @@ By executing `python train_digit_classifier.py --model output/digit_classifier_n
 
 <a id="puzzle-solving"></a>
 #### Puzzle Solving
-By executing `python solve_sudoku_puzzle.py --model output/digit_classifier_new.h5 --image sudoku_puzzle.jpg`, we use the model trained above to solve the sample sudoku problem. The outputs (combined) are shown as follows,
+By executing `python solve_sudoku_puzzle.py --model output/digit_classifier_new.h5 --image sudoku_puzzle.jpg`, we use the model trained above to solve the sample sudoku problem. If fortunate enough, we may get accurate outputs, as shown (combined) as follows,
 <img src="pics/1-2.PNG" alt="drawing" width="100%; margin:0 auto;"/>
 
 
@@ -326,7 +329,7 @@ Meanwhile, we may decide `LearningRate` further based on the trends shown in the
 
 
 
-
+<br>
 <div style="page-break-after: always;"></div>
 
 
@@ -353,10 +356,10 @@ Here we test how either of the two classifiers works together with the solver by
 
 
 <a id="sudokunet--solver"></a>
-#### SudokuNet + Solver
+### SudokuNet + Solver
 <a id="single-test-image"></a>
-##### Single Test Image
-By connecting the SudokuNet model with the solver, we may get the following test results, *(*left*: test Sudoku image; *middle & right*: results)*  
+#### Single Test Image
+By connecting the SudokuNet model with the solver, in most cases, we may get the following somehow inaccurate test results, *(*left*: test Sudoku image; *middle & right*: results)*  
 <img src="pics/4-1_opencv.png" alt="drawing" width="100%; margin:0 auto;"/>
 
 From which, 
@@ -366,21 +369,24 @@ From which,
 
 
 <a id="multiple-test-images"></a>
-##### Multiple Test Images
+#### Multiple Test Images
 By connecting the SudokuNet model with the solver, we may get the following test results upon the 100 images describe above,  
 <img src="pics/6-2_opencv_num_changed.png" alt="drawing" width="60%; margin:0 auto;"/>
 
 From which, 
 
 + Unsolved ratios are high, indicating that most board images are facing the problem of incorrect digit recognition. Since the number of filled cells is big, more errors appear and less possible the board can be solved within 5 changes of cells.
-+ Angles of lower (dense distribution) and right (higher probability of a solution) are more preferable.
++ Angles of lower (denser distribution) and right (higher probability of a solution) are more preferable (somehow meaningless though).
++ The captured image of Sudoku board should be of the one with less filled numbers for better performance.
 
 
 
 <br>
 
 <a id="lenet-5--solver"></a>
-#### LeNet-5 + Solver
+### LeNet-5 + Solver
+<a id="single-test-image-1"></a>
+#### Single Test Image
 By connecting the LeNet-5 model (trained with BatchSize=32, LearningRate=0.001, Epoch=10) with the solver, we may get the following test results, *(*left*: test Sudoku image; *middle & right*: results)*  
 <img src="pics/4-2_lenet.png" alt="drawing" width="100%; margin:0 auto;"/>
 
@@ -390,8 +396,38 @@ From which,
 + At least 4 cells should be emptied to get a solution.
 
 
+<a id="multiple-test-images-1"></a>
+#### Multiple Test Images
+By connecting the SudokuNet model with the solver, we may get the following test results upon the 100 images describe above,  
+<img src="pics/6-2_LeNet5_num_changed.png" alt="drawing" width="60%; margin:0 auto;"/>todo
+
+From which, todo
+
++ Unsolved ratios are high, indicating that most board images are facing the problem of incorrect digit recognition. Since the number of filled cells is big, more errors appear and less possible the board can be solved within 5 changes of cells.
++ Angles of lower (denser distribution) and right (higher probability of a solution) are more preferable (somehow meaningless though).
++ The captured image of Sudoku board should be of the one with less filled numbers for better performance.
 
 
+
+<br><br>
+
+<a id="execution---ei339-test-sudoku-boards"></a>
+## Execution - EI339 Test Sudoku Boards
+Although using models more advanced that LeNet-5 is allowed in this task, for simplicity, we stick on it and do not introduce other networks, since, 
+
++ The change of network structures includes almost just the same procedures as those done for LeNet-5, suggesting duplicate time-consuming work.
++ Moreover, as stated by instructors, the project itself does not require high model accuracy.
+
+With regard to the test images provided by EI339 instructors, we have the following test results,
+
+todo
+
+
+
+
+
+
+<br>
 
 <div style="page-break-after: always;"></div>
 
