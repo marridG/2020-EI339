@@ -11,7 +11,7 @@ class SudokuSolver:
         # Initiate with empty SudokuBoard, to get constants only
         self.board = SudokuBoard(board=np.full((9, 9), -99, dtype=np.int),
                                  invalid_tolerable=False, show_info=False)
-        self.max_err = 5
+        self.max_err = max_err
 
     def __flatten_board__(self, board: SudokuBoard) \
             -> (np.ndarray,
