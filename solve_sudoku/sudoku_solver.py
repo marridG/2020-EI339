@@ -89,7 +89,8 @@ class SudokuSolver:
             to_empty_ref_idx_comb = self.__err__generate_combinations_by_lst_num__(
                 lst=to_empty_ref_idx, length=emptied_cnt)
             # iterate to-change ref-idx combination tuples (e.g. (1,), (0,3))
-            for _ref_idx_tup in tqdm(to_empty_ref_idx_comb):
+            for _ref_idx_tup in to_empty_ref_idx_comb:
+                # for _ref_idx_tup in tqdm(to_empty_ref_idx_comb):
                 new_board = deepcopy(board)
                 # iterate to-change ref-idx-s
                 for _ref_idx in _ref_idx_tup:
