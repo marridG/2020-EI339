@@ -9,10 +9,13 @@ from digit_classifiers import networks_structures, networks_models
 output_path = "./models"
 
 
-def train(model_path: str = output_path, dataset_settings: list = None,
+def train(model_path: str = output_path,
+          structure_settings: (int, int) = None,
+          dataset_settings: list = None,
           num_classes: int = 20,
           batch_size: int = 30, lr: float = 1e-3, epoch: int = 1):
-    print("Hyper-parameters: batch_size=%d, lr=%.5f, epoch=%d" % (batch_size, lr, epoch))
+    print("Hyper-parameters: batch_size=%d, lr=%.5f, epoch=%d, activation=%d, final_out=%d"
+          % (batch_size, lr, epoch, structure_settings[0], structure_settings[1]))
 
     transform = torchvision.transforms.Compose([
         torchvision.transforms.ToTensor(),
@@ -59,7 +62,7 @@ def train(model_path: str = output_path, dataset_settings: list = None,
         #  "train_loss": np.array([0.3, 0.2, 0.1]), "train_acc": np.array([70.4, 80.1, 90.5]),
         #  "test_acc": 80.1, },
     ]
-    
+
     for (train_name, test_name) in dataset_settings:
         assert train_name in dataset_labels, \
             "[Error] Invalid Train Name \"%s\". Supported are %s" \
@@ -68,18 +71,25 @@ def train(model_path: str = output_path, dataset_settings: list = None,
             "[Error] Invalid Test Name \"%s\". Supported are %s" \
             % (test_name, ", ".join(dataset_labels))
 
+        (activation_idx, final_out_idx) = structure_settings
         print("Train upon %s, Test upon %s\n\tbs=%d, lr=%.5f, epoch=%d"
               % (train_name, test_name, batch_size, lr, epoch))
         train_loader = dataset_label_to_loader["train"][train_name]
         test_loader = dataset_label_to_loader["test"][test_name]
-        network = networks_structures.LeNet5(num_classes=num_classes)
+        network = networks_structures.LeNet5(num_classes=num_classes,
+                                             activation_idx=activation_idx,
+                                             final_out_idx=final_out_idx)
         model = networks_models.NetworkModel(network=network,
                                              optimizer=torch.optim.SGD(
                                                  params=network.parameters(), lr=lr, momentum=0.9))
         train_loss, train_acc = model.train(train_loader=train_loader, num_epoch=epoch)
+        if structure_settings is None:
+            filename_prefix = "LeNet5__lr=%.5f__epoch=%d__batch_size=%d" % (lr, epoch, batch_size)
+        else:
+            filename_prefix = "LeNet5__lr=%.5f__epoch=%d__batch_size=%d_structure=(%d,%d)" \
+                              % (lr, epoch, batch_size, structure_settings[0], structure_settings[1])
         output_model_fn = model.output_model(path=model_path,
-                                             filename_prefix="LeNet5__lr=%.5f__epoch=%d__batch_size=%d" %
-                                                             (lr, epoch, batch_size),
+                                             filename_prefix=filename_prefix,
                                              min_loss=np.min(train_loss),
                                              loss_each_epoch=train_loss,
                                              accuracy_each_epoch=train_acc,
