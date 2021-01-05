@@ -14,6 +14,7 @@ sb_solver_obj = sudoku_solver.SudokuSolver(max_err=5)
 
 test_img_group = load_imgs.get_image_fns(key="Jilin_2")
 test_image = "../imgs/sudoku_puzzle.jpg"
+out_path = "num_changed_plot"
 
 SOLVE_SINGLE = False  # True
 SOLVE_ALL = True
@@ -75,7 +76,8 @@ if SOLVE_ALL:
             else:
                 num_changed_list.append(10)
         num_changed_list = np.array(num_changed_list)
-        np.save("./opencv__num_changed.npy", num_changed_list)
+        np.save(os.path.join(out_path, "opencv__num_changed.npy"),
+                num_changed_list)
         print(num_changed_list)
 
     # plot
@@ -112,5 +114,5 @@ if SOLVE_ALL:
     plt.title(r"Using SudokuNet + Solver, Try Solving with $\leq$ 5 Cells Changed", fontsize=9)
     plt.legend(label_flag, label_str, loc="best")
     fig.subplots_adjust(top=0.86)
-    plt.savefig("opencv_num_changed.png", dpi=200)
+    plt.savefig(os.path.join(out_path, "opencv_num_changed.png"), dpi=200)
     plt.show() if PLOTS_SHOW else print(end="")
