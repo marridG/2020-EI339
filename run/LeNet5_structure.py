@@ -45,7 +45,7 @@ print("All %d Setting(s) Trained" % len(structure_settings))
 plt.close("all")
 fig, (ax, ax2) = plt.subplots(2, 1, sharex=True)
 ax2.set_ylim(8, 12)  # outliers only
-ax.set_ylim(85, 101)  # most of the data
+ax.set_ylim(80, 101)  # most of the data
 # hide the spines between ax and ax2
 ax.spines['bottom'].set_visible(False)
 ax2.spines['top'].set_visible(False)
@@ -72,7 +72,7 @@ ax.axhline(y=100, linestyle="--", color="grey")
 ax2.set_xlabel("Epoch")
 ax.set_ylabel("Test Accuracy / %"), ax2.set_ylabel("Test Accuracy / %")
 ax.set_title("BatchSize=%d, LearningRate=%.5f, Epoch=%d, Train&Test=%s\nActivations=%r"
-             % (BS, EP, LR, d_set, list(ACTIVATIONS_NAMES.values())),
+             % (BS, LR, EP, d_set, list(ACTIVATIONS_NAMES.values())),
              fontsize=9)
 fig.suptitle("Train Accuracies of Different Avtivation Functions")
 ax.legend()

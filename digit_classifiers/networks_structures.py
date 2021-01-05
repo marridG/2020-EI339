@@ -31,9 +31,9 @@ class LeNet5(torch.nn.Module):
         if 0 == self.activation_idx:  # relu activation
             func = torch.nn.functional.relu
         elif 1 == self.activation_idx:  # HardTanh activation
-            func = torch.nn.functional.hardtanh
+            func = torch.tanh
         elif 2 == self.activation_idx:  # sigmoid activation
-            func = torch.nn.functional.sigmoid
+            func = torch.sigmoid
         elif 3 == self.activation_idx:  # leaky_relu activation
             func = torch.nn.functional.leaky_relu  # negative slope = 0.01
         else:  # 4 == self.activation_idx:  # elu activation
