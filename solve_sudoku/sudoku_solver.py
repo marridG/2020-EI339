@@ -2,6 +2,7 @@ import typing
 import numpy as np
 from copy import deepcopy
 import itertools
+from tqdm import tqdm
 
 from .sudoku_board import SudokuBoard
 
@@ -84,11 +85,11 @@ class SudokuSolver:
         _, _, _, nonempty_idx_board, _ = self.__flatten_board__(board=board)
         to_empty_ref_idx = list(range(nonempty_idx_board[0].size))  # reference id, shape (nonempty_cnt,)
         for emptied_cnt in range(1, min(self.max_err + 1, len(to_empty_ref_idx) + 1)):
-            print("[INFO] \tAttempt to Solve by Changing %2d Cells" % emptied_cnt)
+            print("[INFO] \tAttempt to Solve by Changing %*d Cells" % (len(str(self.max_err)), emptied_cnt))
             to_empty_ref_idx_comb = self.__err__generate_combinations_by_lst_num__(
                 lst=to_empty_ref_idx, length=emptied_cnt)
             # iterate to-change ref-idx combination tuples (e.g. (1,), (0,3))
-            for _ref_idx_tup in to_empty_ref_idx_comb:
+            for _ref_idx_tup in tqdm(to_empty_ref_idx_comb):
                 new_board = deepcopy(board)
                 # iterate to-change ref-idx-s
                 for _ref_idx in _ref_idx_tup:
