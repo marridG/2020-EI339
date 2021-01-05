@@ -10,7 +10,8 @@ from matplotlib import pyplot as plt
 from . import multi_img_view
 
 
-def find_puzzle(image: np.ndarray, debug: bool = False) -> (np.ndarray, np.ndarray):
+def find_puzzle(image: np.ndarray, debug: bool = False) \
+        -> (np.ndarray, np.ndarray):
     """
     Find the puzzle in the input image
     :param image:   image data
@@ -105,12 +106,14 @@ def find_puzzle(image: np.ndarray, debug: bool = False) -> (np.ndarray, np.ndarr
     return puzzle, warped
 
 
-def extract_digit(cell: np.ndarray, debug: bool = False):
+def extract_digit(cell: np.ndarray, debug: bool = False, final: bool = False) \
+        -> np.ndarray:
     """
-
+    Extract the sub-images of digits on the board
     :param cell:    an ROI representing an individual cell of the Sudoku puzzle
                         (it may or may not contain a digit)
     :param debug:   whether to show intermediate images
+    :param final:   whether the final mode is on, for EI339 final test images only
     :return:        None if no digit contours found
     """
     debug_imgs = []  # for debug only, to-show imgs
@@ -123,6 +126,11 @@ def extract_digit(cell: np.ndarray, debug: bool = False):
     # connected borders that touch the border of the cell
     thresh = cv2.threshold(cell, 0, 255,
                            cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
+    if final:  # dilate/strengthen the writings
+        kernel_size = 6
+        kernel = np.ones((kernel_size, kernel_size), np.uint8)
+        thresh = cv2.dilate(thresh, kernel=kernel, iterations=1)
+
     if debug:
         debug_imgs.append(thresh.copy())
         debug_subtitles.append("Threshold")
@@ -147,43 +155,47 @@ def extract_digit(cell: np.ndarray, debug: bool = False):
             plt.show()
         return None
 
-    # otherwise, find the largest contour in the cell and create a
-    # mask for the contour
-    c = max(cnts, key=cv2.contourArea)
-    mask = np.zeros(thresh.shape, dtype="uint8")
-    cv2.drawContours(mask, [c], -1, 255, -1)
-    if debug:
-        debug_imgs.append(mask.copy())
-        debug_subtitles.append("Mask for the Largest Contour")
+    if final:
+        digit = thresh
+    else:
+        # otherwise, find the largest contour in the cell and create a
+        # mask for the contour
+        c = max(cnts, key=cv2.contourArea)
+        mask = np.zeros(thresh.shape, dtype="uint8")
+        cv2.drawContours(mask, [c], -1, 255, -1)
+        if debug:
+            debug_imgs.append(mask.copy())
+            debug_subtitles.append("Mask for the Largest Contour")
 
-    # compute the percentage of masked pixels relative to the total
-    # area of the image
-    (h, w) = thresh.shape
-    percent_filled = cv2.countNonZero(mask) / float(w * h)
+        # compute the percentage of masked pixels relative to the total
+        # area of the image
+        (h, w) = thresh.shape
+        percent_filled = cv2.countNonZero(mask) / float(w * h)
 
-    # if less than 3% of the mask is filled then we are looking at
-    # noise and can safely ignore the contour
-    if percent_filled < 0.03:
-        if debug:  # show debug images before return
-            _ = multi_img_view.multi_img_view(
-                images=debug_imgs, subtitles=debug_subtitles, col_cnt=2, row_cnt=2,
-                title="Extract Digits - Returned <3%", fig_size=None, close_all=True)
-            plt.show()
-        return None
+        # if less than 3% of the mask is filled then we are looking at
+        # noise and can safely ignore the contour
+        if percent_filled < 0.03:
+            if debug:  # show debug images before return
+                _ = multi_img_view.multi_img_view(
+                    images=debug_imgs, subtitles=debug_subtitles, col_cnt=2, row_cnt=2,
+                    title="Extract Digits - Returned <3%", fig_size=None, close_all=True)
+                plt.show()
+            return None
 
-    # apply the mask to the thresholded cell
-    digit = cv2.bitwise_and(thresh, thresh, mask=mask)
+        # apply the mask to the thresholded cell
+        digit = cv2.bitwise_and(thresh, thresh, mask=mask)
 
-    # check to see if we should visualize the masking step
-    if debug:
-        debug_imgs.append(digit.copy())
-        debug_subtitles.append("Digit by Mask")
+        # check to see if we should visualize the masking step
+        if debug:
+            debug_imgs.append(digit.copy())
+            debug_subtitles.append("Digit by Mask")
 
     # Show Debug Images
     if debug:
         _ = multi_img_view.multi_img_view(
             images=debug_imgs, subtitles=debug_subtitles, col_cnt=3, row_cnt=2,
-            title="Extract Digits", fig_size=None, close_all=True)
+            title="Extract Digits (Final Mode %s)" % ("ON" if final else "OFF"),
+            fig_size=None, close_all=True)
         plt.show()
 
     # return the digit to the calling function
