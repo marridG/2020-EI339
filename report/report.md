@@ -29,6 +29,7 @@ EI339 Artificial Intelligence, 2020 Fall, SJTU
 - [Task 3 - LeNet-5](#task-3---lenet-5)
     - [Data Loader](#data-loader)
     - [Execution - Hyper-Parameters of Training](#execution---hyper-parameters-of-training)
+    - [Execution - Structure of LeNet-5 Implementation](#execution---structure-of-lenet-5-implementation)
 - [Execution - Classifiers + Solver](#execution---classifiers--solver)
     - [SudokuNet + Solver](#sudokunet--solver)
         - [Single Test Image](#single-test-image)
@@ -114,7 +115,9 @@ find_puzzle(image: np.ndarray, debug: bool = False) -> (np.ndarray, np.ndarray)
 ```
 By changing popping out debug images to adding to multi-image-view group, for the sample image, we may get the intermediate images, as,
 
-<img src="pics/0-1.PNG" alt="drawing" width="60%; margin:0 auto;"/>
+<div style="text-align: center;">
+    <img src="pics/0-1.PNG" alt="drawing" width="60%; margin:0 auto;"/>
+</div>
 
 
 <br>
@@ -128,7 +131,9 @@ extract_digit(cell: np.ndarray, debug: bool = False)
 ```
 By changing popping out debug images to adding to multi-image-view group, for the sample image, we may get the intermediate images, in cases where there is/is not a digit, as,
 
-<img src="pics/0-2.PNG" alt="drawing" width="90%; margin:0 auto;"/>
+<div style="text-align: center;">
+    <img src="pics/0-2.PNG" alt="drawing" width="90%; margin:0 auto;"/>
+</div>
 
 <br>
 
@@ -137,7 +142,9 @@ By changing popping out debug images to adding to multi-image-view group, for th
 ### Neural Network - `SudokuNet`
 The architecture of `SudokuNet`, implemented in `/opencv-sudoku-solver/pyimagesearch/models/sudokunet.py`, is depicted as follows, (generated using [tools](http://alexlenail.me/NN-SVG/AlexNet.html))
 
-<img src="pics/0-3.PNG" alt="drawing" width="100%; margin:0 auto;"/>
+<div style="text-align: center;">
+    <img src="pics/0-3.PNG" alt="drawing" width="100%; margin:0 auto;"/>
+</div>
 
 
 
@@ -149,12 +156,21 @@ The architecture of `SudokuNet`, implemented in `/opencv-sudoku-solver/pyimagese
 <a id="training"></a>
 #### Training
 By executing `python train_digit_classifier.py --model output/digit_classifier_new.h5`, we get the following outputs,
-<img src="pics/1-1.PNG" alt="drawing" width="100%; margin:0 auto;"/>
+
+<div style="text-align: center;">
+    <img src="pics/1-1.PNG" alt="drawing" width="100%; margin:0 auto;"/>
+</div>
+
+
+
 
 <a id="puzzle-solving"></a>
 #### Puzzle Solving
 By executing `python solve_sudoku_puzzle.py --model output/digit_classifier_new.h5 --image sudoku_puzzle.jpg`, we use the model trained above to solve the sample sudoku problem. If fortunate enough, we may get accurate outputs, as shown (combined) as follows,
-<img src="pics/1-2.PNG" alt="drawing" width="100%; margin:0 auto;"/>
+
+<div style="text-align: center;">
+    <img src="pics/1-2.PNG" alt="drawing" width="100%; margin:0 auto;"/>
+</div>
 
 
 
@@ -232,7 +248,10 @@ The approach is somehow straightforward, as,
 <a id="execution---sudoku-board-and-solver"></a>
 ### Execution - Sudoku Board and Solver
 As depicted in the following figure, given an invalid board as in the left, we may change one cell to get a solution as in the right.  
-<img src="pics/2-1_err.PNG" alt="drawing" width="80%; margin:0 auto;"/>
+
+<div style="text-align: center;">
+    <img src="pics/2-1_err.PNG" alt="drawing" width="80%; margin:0 auto;"/>
+</div>
 
 
 
@@ -250,7 +269,9 @@ As depicted in the following figure, given an invalid board as in the left, we m
 ## Task 3 - LeNet-5
 Based on `LeCun, Yann, Léon Bottou, Yoshua Bengio, and Patrick Haffner. "Gradient-based learning applied to document recognition." Proceedings of the IEEE 86, no. 11 (1998): 2278-2324`, we may implement the proposed LeNet-5 structure, as illustrated in the figure below,
 
-<img src="pics/3-1.PNG" alt="drawing" width="100%; margin:0 auto;"/>
+<div style="text-align: center;">
+    <img src="pics/3-1.PNG" alt="drawing" width="100%; margin:0 auto;"/>
+</div>
 
 In modern frameworks, some tricks of `LeNet-5` (like layer $C3$, originally proposed due to the computation limits that time) are unnecessary at all. Thus, we may further simplify the network connections and add nonlinear activations (say, ReLU) for better performance.
 
@@ -281,30 +302,52 @@ To feed the training data and prepare the test data, i.e., while combining datas
 
 <br>
 
+
+
 <a id="execution---hyper-parameters-of-training"></a>
 ### Execution - Hyper-Parameters of Training
-**Firstly**, how the LeNet-5 model learns the features of the input training data.  
-As is shown in the below figure (invisible elements are of values exactly 0),
+In this section, we use `ReLU` activation function.  
+<br>
+**Firstly**, how the LeNet-5 model learns the features of the input training data.
+
+<div style="text-align: center;">
+    <img src="pics/5-1_datasets.png" alt="drawing" width="60%; margin:0 auto;"/>
+</div>
+
+As is shown in the above figure (invisible elements are of values exactly 0),
 
 + The overall learning of any of `MNIST`, `EI339` and `MNIST+EI339` is satisfactory enough.
 + As expected, the features of digits (represented by `MNIST`) and Chinese numbers (represented by `EI339`) are quite different, resulting in extremely low test accuracies, as 0.
 
-<img src="pics/5-1_datasets.png" alt="drawing" width="60%; margin:0 auto;"/>
 
+<br>
 
 **Secondly**, the impact of `BatchSize` and `Epoch` values on the test accuracies.  
-As is shown in the figure below *(left: `BatchSize`; right: `Epoch`)*, there are,
+
+<div style="text-align: center;">
+    <img src="pics/5-2&3_bs&ep.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <!-- <img src="pics/5-2_batch_size.png" alt="drawing" width="60%; margin:0 auto;"/>
+    <img src="pics/5-3_epoch.png" alt="drawing" width="60%; margin:0 auto;"/> -->
+</div>
+
+As is shown in the figure above *(left: `BatchSize`; right: `Epoch`)*, there are,
 
 + As expected, the larger the `BatchSize`, the lower the overall test accuracies are. However, quite intuitively, the smaller the `BatchSize`, the more time the training consumes. Thus, an intermediate value should be chosen. Commonly, values of about 30 are selected for the image classification tasks.
 + As expected, the larger the `Epoch`, the higher the overall test accuracies are. Similarly, large `Epoch` values results in longer training time. Proper values depend on whether a fine-grained model is required.  
-<img src="pics/5-2&3_bs&ep.png" alt="drawing" width="100%; margin:0 auto;"/>
-<!-- <img src="pics/5-2_batch_size.png" alt="drawing" width="60%; margin:0 auto;"/>
-<img src="pics/5-3_epoch.png" alt="drawing" width="60%; margin:0 auto;"/> -->
 
+
+<br>
 
 
 **Thirdly**, the impact of `LearningRate` values on the train and test results.  
-As is shown in the figure below *(left: train loss; right: train accuracy tested upon training set after each training epoch)*, we have the following observations, (from which the major training babysitting is done)
+
+<div style="text-align: center;">
+    <img src="pics/5-4&5_lr_train_acc&loss.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <!-- <img src="pics/5-4_lr_train_acc.png" alt="drawing" width="60%; margin:0 auto;"/>
+    <img src="pics/5-5_lr_train_loss.png" alt="drawing" width="60%; margin:0 auto;"/> -->
+</div>
+
+As is shown in the figure above *(left: train loss; right: train accuracy tested upon training set after each training epoch)*, we have the following observations, (from which the major training babysitting is done)
 
 + As expected, proper `LearningRate` values (e.g. `5e-3, 1e-3`, etc.) result in a decreasing train loss.
 + `LearningRate` values (`1e-1, 5e-2`) are too large, resulting in bad loss convergence (in an increasing trend) and accuracy (in a decreasing trend).
@@ -312,21 +355,70 @@ As is shown in the figure below *(left: train loss; right: train accuracy tested
     * A steep curve indicate a proper but still too large `LearningRate`.
     * A shallow curve indicate a proper but still too small `LearningRate`.
 
-<img src="pics/5-4&5_lr_train_acc&loss.png" alt="drawing" width="100%; margin:0 auto;"/>
-<!-- <img src="pics/5-4_lr_train_acc.png" alt="drawing" width="60%; margin:0 auto;"/>
-<img src="pics/5-5_lr_train_loss.png" alt="drawing" width="60%; margin:0 auto;"/> -->
+
+<br>
 
 
-Meanwhile, we may decide `LearningRate` further based on the trends shown in the below figure *(left: train loss; right: train accuracy tested upon training set after each training epoch)*, as, 
+<div style="text-align: center;">
+    <img src="pics/5-6&7_lr_test_acc_&_ diff_train_test_acc.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <!-- <img src="pics/5-6_lr_test_acc.png" alt="drawing" width="60%; margin:0 auto;"/>
+    <img src="pics/5-7_lr_diff_train_test_acc.png" alt="drawing" width="60%; margin:0 auto;"/> -->
+</div>
+
+**Meanwhile**, we may decide `LearningRate` further based on the trends shown in the above figure *(left: train loss; right: train accuracy tested upon training set after each training epoch)*, as, 
 
 + (From left) too large `LearningRate` values result in low test accuracies.
 + (From left) too small `LearningRate` values may lead to too slow learning updates to acquire most features in the given epochs.
 + (From right) the trained model demonstrates big gap between validation on training and test dataset, indicating over-fitting, which is quite comprehensive and supports the [previous argument about the bad data division](#data-loader)
 
-<img src="pics/5-6&7_lr_test_acc_&_ diff_train_test_acc.png" alt="drawing" width="100%; margin:0 auto;"/>
-<!-- <img src="pics/5-6_lr_test_acc.png" alt="drawing" width="60%; margin:0 auto;"/>
-<img src="pics/5-7_lr_diff_train_test_acc.png" alt="drawing" width="60%; margin:0 auto;"/> -->
 
+
+<br>
+
+
+<a id="execution---structure-of-lenet-5-implementation"></a>
+### Execution - Structure of LeNet-5 Implementation
+From the discussion of hyper-parameters mentioned above, the experiment here is based on the setting `BatchSize=32, LearningRate=1e-3, Epoch=10, Train&Test=MNIST+EI339`.  
+For simplicity, we only test several activation functions used after each convolution layer, as,
+
++ `ReLU`: $ReLU(x) = (x)^+ = max(0, x)$
++ `Tanh`: $Tanh(x) = tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$
++ `Sigmoid`: $Sigmoid(x) = \frac{1}{1 + e^{-x}}$
++ `Leaky ReLU`: $LeakyReLU(x) = \max(0,x) + 0.01*\min(0,x) = \max(0.01x, x)$
++ `ELU`: $ELU(x) = \max(0,x) + \min(0, 1*(e^x-1))$
+
+The training accuracies are illustrated in the below figure,
+
+<div style="text-align: center;">
+    <img src="pics/5-8_activation_test_acc.png" alt="drawing" width="70%; margin:0 auto;"/>
+</div>
+
+From which, we have the following observations and attributions,
+
+1. `Sigmoid` performs the worst.  
+    As a historically popular activation function due to the interpretation of neuron "firing rate", it suffers from two major problems here,
+
+    + For "large"/"small" input values, the function saturates, which leads to almost zero gradients. As a result, the updates in the training here cannot be done effectively.
+    + The outputs are not zero-centered, which destroys the pre-guaranteed property.
+    
+2. `Tanh` performs good, but not satisfactory enough.  
+    It is better than `Sigmoid` here due to the zero-centered property (but still possibly saturated), which further supports our arguments.
+
+3. `ReLU`, `Leaky ReLU` and `ELU` all perform well. Among them, `ELU` takes the lead and `ReLU` falls in the last.
+
+    + **`ReLU` outperforms `Tanh` and `Sigmoid`** mainly since saturation is avoided, though suffering the zero-centered problem.
+    + **`Leaky ReLU` outperforms `ReLU`** since the former takes advantage of all strengths of the latter and avoids dead cases where `ReLU` is initialized out of data and never updates.
+    + For a similar reason, **`ELU` outperforms `ReLU`**.
+    + **`ELU` outperforms `Leaky ReLU`** since the negative part of the former is much smoother, leading to better results here, at the cost of computation time.
+
+
+Meanwhile, the test accuracies are listed in the below table,
+    
+| ReLU | Tanh | Sigmoid | Leaky ReLU | ELU |
+| :-----: | :----: | :----: | :----: | :----: |
+| 97.45 | 96.20 | 9.43 | 97.31 | 97.26 |
+
+However, the trend of the test accuracies are not in accordance with that of the training, in that `ReLU > Leaky ReLU > ELU > Tanh >> Sigmoid` instead of `ELU > Leaky ReLU > ReLU > Tanh >> Sigmoid`, mainly possibly because of the bad division of train and test datasets.
 
 
 <br>
@@ -348,7 +440,10 @@ Here we test how either of the two classifiers works together with the solver by
     * all problems from the book `《全民数独 2 初级篇》 马荣鸿 吉林大学出版社`
     * images preview illustrated in the following figure,
 
-<img src="pics/6-1_img_prev.png" alt="drawing" width="100%; margin:0 auto;"/>
+<div style="text-align: center;">
+    <img src="pics/6-1_img_prev.png" alt="drawing" width="100%; margin:0 auto;"/>
+</div>
+
 
 
 
