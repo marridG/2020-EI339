@@ -229,7 +229,7 @@ find_puzzle(image: np.ndarray, debug: bool = False) -> (np.ndarray, np.ndarray)
 By changing popping out debug images to adding to multi-image-view group, for the sample image, we may get the intermediate images, as,
 
 <div style="text-align: center;">
-    <img src="./pics/0-1.PNG" alt="drawing" width="60%; margin:0 auto;"/>
+    <img src="pics/0-1.png" alt="drawing" width="60%; margin:0 auto;"/>
 </div>
 
 
@@ -245,7 +245,7 @@ extract_digit(cell: np.ndarray, debug: bool = False)
 By changing popping out debug images to adding to multi-image-view group, for the sample image, we may get the intermediate images, in cases where there is/is not a digit, as,
 
 <div style="text-align: center;">
-    <img src="./pics/0-2.PNG" alt="drawing" width="90%; margin:0 auto;"/>
+    <img src="pics/0-2.png" alt="drawing" width="90%; margin:0 auto;"/>
 </div>
 
 <br>
@@ -256,7 +256,7 @@ By changing popping out debug images to adding to multi-image-view group, for th
 The architecture of `SudokuNet`, implemented in `/opencv-sudoku-solver/pyimagesearch/models/sudokunet.py`, is depicted as follows, (generated using [tools](http://alexlenail.me/NN-SVG/AlexNet.html))
 
 <div style="text-align: center;">
-    <img src="./pics/0-3.PNG" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/0-3.png" alt="drawing" width="100%; margin:0 auto;"/>
 </div>
 
 
@@ -271,7 +271,7 @@ The architecture of `SudokuNet`, implemented in `/opencv-sudoku-solver/pyimagese
 By executing `python train_digit_classifier.py --model output/digit_classifier_new.h5`, we get the following outputs,
 
 <div style="text-align: center;">
-    <img src="./pics/1-1.PNG" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/1-1.png" alt="drawing" width="100%; margin:0 auto;"/>
 </div>
 
 
@@ -282,7 +282,7 @@ By executing `python train_digit_classifier.py --model output/digit_classifier_n
 By executing `python solve_sudoku_puzzle.py --model output/digit_classifier_new.h5 --image sudoku_puzzle.jpg`, we use the model trained above to solve the sample sudoku problem. If fortunate enough, we may get accurate outputs, as shown (combined) as follows,
 
 <div style="text-align: center;">
-    <img src="./pics/1-2.PNG" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/1-2.png" alt="drawing" width="100%; margin:0 auto;"/>
 </div>
 
 
@@ -363,7 +363,7 @@ The approach is somehow straightforward, as,
 As depicted in the following figure, given an invalid board as in the left, we may change one cell to get a solution as in the right.  
 
 <div style="text-align: center;">
-    <img src="./pics/2-1_err.PNG" alt="drawing" width="80%; margin:0 auto;"/>
+    <img src="pics/2-1_err.png" alt="drawing" width="80%; margin:0 auto;"/>
 </div>
 
 
@@ -383,7 +383,7 @@ As depicted in the following figure, given an invalid board as in the left, we m
 Based on `LeCun, Yann, Léon Bottou, Yoshua Bengio, and Patrick Haffner. "Gradient-based learning applied to document recognition." Proceedings of the IEEE 86, no. 11 (1998): 2278-2324`, we may implement the proposed LeNet-5 structure, as illustrated in the figure below,
 
 <div style="text-align: center;">
-    <img src="./pics/3-1.PNG" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/3-1.png" alt="drawing" width="100%; margin:0 auto;"/>
 </div>
 
 In modern frameworks, some tricks of `LeNet-5` (like layer $C3$, originally proposed due to the computation limits that time) are unnecessary at all. Thus, we may further simplify the network connections and add nonlinear activations for better performance.
@@ -426,7 +426,7 @@ In this section, we use `ReLU` activation function.
 **Firstly**, how the LeNet-5 model learns the features of the input training data.
 
 <div style="text-align: center;">
-    <img src="./pics/5-1_datasets.png" alt="drawing" width="60%; margin:0 auto;"/>
+    <img src="pics/5-1_datasets.png" alt="drawing" width="60%; margin:0 auto;"/>
 </div>
 
 As is shown in the above figure (invisible elements are of values exactly 0),
@@ -440,9 +440,9 @@ As is shown in the above figure (invisible elements are of values exactly 0),
 **Secondly**, the impact of `BatchSize` and `Epoch` values on the test accuracies.  
 
 <div style="text-align: center;">
-    <img src="./pics/5-2&3_bs&ep.png" alt="drawing" width="100%; margin:0 auto;"/>
-    <!-- <img src="./pics/5-2_batch_size.png" alt="drawing" width="60%; margin:0 auto;"/>
-    <img src="./pics/5-3_epoch.png" alt="drawing" width="60%; margin:0 auto;"/> -->
+    <img src="pics/5-2&3_bs&ep.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <!-- <img src="pics/5-2_batch_size.png" alt="drawing" width="60%; margin:0 auto;"/>
+    <img src="pics/5-3_epoch.png" alt="drawing" width="60%; margin:0 auto;"/> -->
 </div>
 
 As is shown in the figure above *(left: `BatchSize`; right: `Epoch`)*, there are,
@@ -457,9 +457,9 @@ As is shown in the figure above *(left: `BatchSize`; right: `Epoch`)*, there are
 **Thirdly**, the impact of `LearningRate` values on the train and test results.  
 
 <div style="text-align: center;">
-    <img src="./pics/5-4&5_lr_train_acc&loss.png" alt="drawing" width="100%; margin:0 auto;"/>
-    <!-- <img src="./pics/5-4_lr_train_acc.png" alt="drawing" width="60%; margin:0 auto;"/>
-    <img src="./pics/5-5_lr_train_loss.png" alt="drawing" width="60%; margin:0 auto;"/> -->
+    <img src="pics/5-4&5_lr_train_acc&loss.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <!-- <img src="pics/5-4_lr_train_acc.png" alt="drawing" width="60%; margin:0 auto;"/>
+    <img src="pics/5-5_lr_train_loss.png" alt="drawing" width="60%; margin:0 auto;"/> -->
 </div>
 
 As is shown in the figure above *(left: train loss; right: train accuracy tested upon training set after each training epoch)*, we have the following observations, (from which the major training babysitting is done)
@@ -475,9 +475,9 @@ As is shown in the figure above *(left: train loss; right: train accuracy tested
 
 
 <div style="text-align: center;">
-    <img src="./pics/5-6&7_lr_test_acc_&_ diff_train_test_acc.png" alt="drawing" width="100%; margin:0 auto;"/>
-    <!-- <img src="./pics/5-6_lr_test_acc.png" alt="drawing" width="60%; margin:0 auto;"/>
-    <img src="./pics/5-7_lr_diff_train_test_acc.png" alt="drawing" width="60%; margin:0 auto;"/> -->
+    <img src="pics/5-6&7_lr_test_acc_&_ diff_train_test_acc.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <!-- <img src="pics/5-6_lr_test_acc.png" alt="drawing" width="60%; margin:0 auto;"/>
+    <img src="pics/5-7_lr_diff_train_test_acc.png" alt="drawing" width="60%; margin:0 auto;"/> -->
 </div>
 
 **Meanwhile**, we may decide `LearningRate` further based on the trends shown in the above figure *(left: train loss; right: train accuracy tested upon training set after each training epoch)*, as, 
@@ -505,7 +505,7 @@ For simplicity, we only test several activation functions used after each convol
 The training accuracies are illustrated in the below figure,
 
 <div style="text-align: center;">
-    <img src="./pics/5-8_activation_test_acc.png" alt="drawing" width="60%; margin:0 auto;"/>
+    <img src="pics/5-8_activation_test_acc.png" alt="drawing" width="60%; margin:0 auto;"/>
 </div>
 
 From which, we have the following observations and attributions,
@@ -556,7 +556,7 @@ Here we test how either of the two classifiers works together with the solver by
     * images preview illustrated in the following figure,
 
 <div style="text-align: center;">
-    <img src="./pics/6-1_img_prev.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/6-1_img_prev.png" alt="drawing" width="100%; margin:0 auto;"/>
 </div>
 
 
@@ -572,7 +572,7 @@ Here we test how either of the two classifiers works together with the solver by
 By connecting the SudokuNet model (trained with `LearningRateR=1e-3, Epoch=10, BatchSize=32`) with the solver, in most cases, we may get the following somehow inaccurate test results, *(*left*: test Sudoku image; *middle & right*: results)*
 
 <div style="text-align: center;">  
-    <img src="./pics/4-1_opencv.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/4-1_opencv.png" alt="drawing" width="100%; margin:0 auto;"/>
 </div>
 
 From which, 
@@ -586,7 +586,7 @@ From which,
 By connecting the SudokuNet model with the solver, we may get the following test results upon the 100 images describe above,  
 
 <div style="text-align: center;">
-    <img src="./pics/6-2_opencv_num_changed.png" alt="drawing" width="60%; margin:0 auto;"/>
+    <img src="pics/6-2_opencv_num_changed.png" alt="drawing" width="60%; margin:0 auto;"/>
 </div>
 
 From which, 
@@ -606,7 +606,7 @@ From which,
 By connecting the LeNet-5 model (using `ReLU`activations, trained with `BatchSize=32, LearningRate=1e-3, Epoch=10`) with the solver, we may get the following test results, *(*left*: test Sudoku image; *middle & right*: results)*  
 
 <div style="text-align: center;">
-    <img src="./pics/4-2_lenet.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/4-2_lenet.png" alt="drawing" width="100%; margin:0 auto;"/>
 </div>
 
 From which, 
@@ -620,7 +620,7 @@ From which,
 By connecting the SudokuNet model with the solver, we may get the following test results upon the 100 images describe above,  
 
 <div style="text-align: center;">
-    <img src="./pics/6-3_LeNet5_num_changed.png" alt="drawing" width="60%; margin:0 auto;"/>
+    <img src="pics/6-3_LeNet5_num_changed.png" alt="drawing" width="60%; margin:0 auto;"/>
 </div>
 
 From which, 
@@ -656,16 +656,16 @@ Notice that, here,
 
 The test results of the ten Sudoku images are, (*left-most*: manually cropped Sudoku image; *left*: extracted digits, *right*: predicted board, *right-most*: solve results)
 <div style="text-align: center;">
-    <img src="./pics/7-1-1.png" alt="drawing" width="100%; margin:0 auto;"/>
-    <img src="./pics/7-1-2.png" alt="drawing" width="100%; margin:0 auto;"/>
-    <img src="./pics/7-1-3.png" alt="drawing" width="100%; margin:0 auto;"/>
-    <img src="./pics/7-1-4.png" alt="drawing" width="100%; margin:0 auto;"/>
-    <img src="./pics/7-1-5.png" alt="drawing" width="100%; margin:0 auto;"/>
-    <img src="./pics/7-2-1.png" alt="drawing" width="100%; margin:0 auto;"/>
-    <img src="./pics/7-2-2.png" alt="drawing" width="100%; margin:0 auto;"/>
-    <img src="./pics/7-2-3.png" alt="drawing" width="100%; margin:0 auto;"/>
-    <img src="./pics/7-2-4.png" alt="drawing" width="100%; margin:0 auto;"/>
-    <img src="./pics/7-2-5.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/7-1-1.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/7-1-2.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/7-1-3.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/7-1-4.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/7-1-5.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/7-2-1.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/7-2-2.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/7-2-3.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/7-2-4.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/7-2-5.png" alt="drawing" width="100%; margin:0 auto;"/>
 </div>
 
 From which, we may come to the following observations and attributions,
