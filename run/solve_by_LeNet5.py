@@ -47,10 +47,11 @@ max_err = 5
 sb_solver_obj = sudoku_solver.SudokuSolver(max_err=max_err)
 
 test_img_group = load_imgs.get_image_fns(key="Jilin_2")
-test_img_group_manual_single_target = 4  # None  #
-if test_img_group_manual_single_target is not None:
+test_img_group_manual_single_target = None  # 10
+if test_img_group_manual_single_target is not None and \
+        isinstance(test_img_group_manual_single_target, int):
     test_img_group = test_img_group[test_img_group_manual_single_target:
-                                    test_img_group_manual_single_target + 4]
+                                    test_img_group_manual_single_target + 10]
 test_image = "../imgs/sudoku_puzzle.jpg"
 out_path = "num_changed_plot"
 
@@ -81,7 +82,16 @@ if SOLVE_SINGLE:
 
 # ===== all images =====
 if SOLVE_ALL:
-    num_changed_list = [10, 4, 10, 4, ]
+    num_changed_list = [10, 4, 10, 4, 10, 0, 5, 2, 3, 0,
+                        1, 1, 2, 1, 0, 3, 3, 10, 0, 0,
+                        10, 0, 5, 0, 0, 0, 0, 5, 1, 0,
+                        1, 0, 10, 10, 10, 0, 5, 3, 10, 10,
+                        4, 0, 10, 10, 0, 0, 10, 0, 0, 10,
+                        10, 0, 10, 0, 0, 10, 0, 2, 4, 0,
+                        0, 5, 3, 1, 0, 3, 0, 2, 2, 0,
+                        3, 0, 3, 2, 0, 10, 5, 2, 1, 10,
+                        0, 0, 4, 4, 0, 2, 0, 10, 0, 0,
+                        0, 0, 1, 10, 0, 2, 0, 2, 1, 0]
     # solve if not all solved
     if test_img_group_manual_single_target is not None or len(num_changed_list) != len(test_img_group):
         num_changed_list = []
@@ -109,11 +119,11 @@ if SOLVE_ALL:
                 print(img_name, " => ", empties_cnt)
                 print()
 
-        if test_img_group_manual_single_target is None:
-            num_changed_list = np.array(num_changed_list)
-            np.save(os.path.join(out_path, "LeNet5__num_changed.npy"),
-                    num_changed_list)
-            print(num_changed_list)
+    if test_img_group_manual_single_target is None:
+        num_changed_list = np.array(num_changed_list)
+        np.save(os.path.join(out_path, "LeNet5__num_changed.npy"),
+                num_changed_list)
+        print(num_changed_list)
 
     # plot
     if test_img_group_manual_single_target is None:
@@ -150,5 +160,5 @@ if SOLVE_ALL:
         plt.title(r"Using LeNet-5 + Solver, Try Solving with $\leq$ %d Cells Changed" % max_err, fontsize=9)
         plt.legend(label_flag, label_str, loc="best")
         fig.subplots_adjust(top=0.86)
-        plt.savefig(s.path.join(out_path, "LeNet5_num_changed.png"), dpi=200)
+        plt.savefig(os.path.join(out_path, "LeNet5_num_changed.png"), dpi=200)
         plt.show() if PLOTS_SHOW else print(end="")
