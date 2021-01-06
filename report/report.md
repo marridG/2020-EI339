@@ -13,6 +13,7 @@ EI339 Artificial Intelligence, 2020 Fall, SJTU
 - [Description](#description)
 - [Highlights](#highlights)
 - [Environment](#environment)
+- [Project File Tree](#project-file-tree)
 - [Task 1 - OpenCV Sudoku Solver and OCR](#task-1---opencv-sudoku-solver-and-ocr)
     - [Image Preprocessing](#image-preprocessing)
         - [Multi-Image View](#multi-image-view)
@@ -38,7 +39,8 @@ EI339 Artificial Intelligence, 2020 Fall, SJTU
     - [LeNet-5 + Solver](#lenet-5--solver)
         - [Single Test Image](#single-test-image-1)
         - [Multiple Test Images](#multiple-test-images-1)
-- [Execution - EI339 Test Sudoku Boards](#execution---ei339-test-sudoku-boards)
+- [Final Execution - EI339 Test Sudoku Boards](#final-execution---ei339-test-sudoku-boards)
+- [Summary](#summary)
 - [Appendix](#appendix)
     - [Multi-Image View Implementation](#multi-image-view-implementation)
     - [Sudoku Board Implementation](#sudoku-board-implementation)
@@ -70,12 +72,14 @@ EI339 Artificial Intelligence, 2020 Fall, SJTU
 <a id="highlights"></a>
 ## Highlights
 
+0. Modern project management: [Github](https://github.com/marridG/2020-EI339) (Accessible after DDL 2021/01/07 00:00 UTC+8). For better report or codes layouts, the online version might be more preferable.
 1. Fully-annotated codes: both in function prototypes and between the lines.
 2. Carefully designed and wrapped functionalities: divide the board-extraction, Sudoku-board-formation, problem-solving processes into different packages and provide high-level APIs.
 3. Extensive experiment upon **(1)** influence of the selection of train and test datasets; *(2)** SudokuNet VS LeNet-5; **(3)** LeNet-5 activations (with analysis), training hyper-parameters.
-4. Construct real-world Sudoku problems set based on the published book `《全民数独》` and conduct tests upon the images captured from 5 angles: bird-view, left, upper, right and lower.
-5. Analysis and solid intermediate results.
-6. Some other implemented useful functionalities.
+4. Error-tolerable CSP Sudoku solver.
+5. Construct real-world Sudoku problems set based on the published book `《全民数独》` and conduct tests upon the images captured from 5 angles: bird-view, left, upper, right and lower.
+6. Analysis and solid intermediate results.
+7. Some other implemented useful functionalities.
 
 <br>
 
@@ -88,6 +92,104 @@ EI339 Artificial Intelligence, 2020 Fall, SJTU
 
 <br>
 
+
+
+<div style="page-break-after: always;"></div>
+
+
+<a id="project-file-tree"></a>
+## Project File Tree
+```
+~
+│  .gitignore
+│  LICENSE
+│  README.md
+│  
+├─digit_classifiers                     // codes for digit classifiers
+│     networks_models.py                // network utilities (e.g. training)
+│     networks_structures.py            // network structures (LeNet-5 here)
+│     __init__.py
+│          
+├─extract_sudoku                        // [wrapper] step of extract Sudoku image
+│     board_img_arr.py                  // image == extract ==> Sudoku board object
+│     LeNet5__predict.py                // API of LeNet-5 prediction
+│     LeNet5__train.py                  // API of LeNet-5 training
+│     opencv__predict.py                // API of SudokuNet prediction
+│     opencv__train.py                  // API of SudokuNet prediction
+│     __init__.py
+│          
+│─solve_sudoku
+│      sudoku_board.py
+│      sudoku_solver.py
+│      __init__.py
+│
+│
+├─examples                              // example codes
+│      extract_board.py                 // example codes to extract Sudoku boards
+│      solve-sudoku.py                  // example codes to solve Sudoku problems
+│      sudoku_puzzle.jpg                // example image
+│
+├─run                                   // final codes to execute
+│  │  final_imgs.py                     // solve the given 5+5 final images
+│  │  LeNet5_params.py                  // hyper-parameters test codes
+│  │  LeNet5_structure.py               // structure test codes
+│  │  solve_by_LeNet5.py                // LeNet-5 100-image test codes
+│  │  solve_by_opencv.py                // SudokuNet 100-image test codes
+│  │  
+│  ├─final_out                          // results of the given 5+5 final images
+│  ├─num_changed_plot                   // results of 100-image test
+│  ├─params_plot                        // plots of hyper-parameters tests
+│  ├─params_report                      // .json reports of hyper-parameters tests
+│  ├─structure_plot                     // plots of network structure tests
+│  └─structure_report                   // .json reports of structure tests
+│               
+│
+├─data
+│  │  load_local_dataset.py             // data loader codes
+│  │  
+│  ├─EI339-CN dataset sjtu              // EI339 dataset folder
+│  │  ├─1, 2, ..., 10                   // raw data of EI339
+│  │  ├─mapping                         // intermediate folder: filenames mapping of EI339
+│  │  └─processed                       // data file (.pt) of EI339
+│  │          
+│  ├─MNIST                              // data file of MNIST
+│  └─MNIST+EI339                        // combined data file (.pt) of MNIST+EI339
+│          
+├─imgs                                  // test images folder & loader
+│  │  load_imgs.py                      // image loader
+│  │  overview.py                       // generate an overview of 100-image test images
+│  │  sudoku_puzzle.jpg                 // test image
+│  │  __init__.py
+│  │  
+│  ├─JilinUnivPr                        // images captured from 《全民数独》, 吉林大学出版社
+│  │  └─imgs                            // 100 images of 100-image tests
+│  │          
+│  └─test1                              // final 5+5 test Sudoku problems images 
+│          
+├─models                                // trained models
+│      
+├─opencv_sudoku_solver                  // given OpenCV approach proposed online
+│  │  solve_sudoku_puzzle.py            // solved codes
+│  │  sudoku_puzzle.jpg                 // test image
+│  │  train_digit_classifier.py         // train codes
+│  │  __init__.py
+│  │  
+│  ├─output                             // output models
+│  │      
+│  └─pyimagesearch                      // SudokuNet & captured board extractor
+│     │  __init__.py
+│     │  
+│     ├─models                          // SudokuNet structure
+│     │     sudokunet.py
+│     │     __init__.py
+│     │          
+│     └─sudoku                          // captured board extractor
+│           multi_img_view.py           // added functionality: combine & show multiple images together
+│           puzzle.py                   // board extractor: find puzzle & extract digit
+│           __init__.py
+│          
+└─report                                // report files
+```
 
 <div style="page-break-after: always;"></div>
 
@@ -402,7 +504,7 @@ For simplicity, we only test several activation functions used after each convol
 The training accuracies are illustrated in the below figure,
 
 <div style="text-align: center;">
-    <img src="pics/5-8_activation_test_acc.png" alt="drawing" width="70%; margin:0 auto;"/>
+    <img src="pics/5-8_activation_test_acc.png" alt="drawing" width="60%; margin:0 auto;"/>
 </div>
 
 From which, we have the following observations and attributions,
@@ -489,7 +591,7 @@ By connecting the SudokuNet model with the solver, we may get the following test
 From which, 
 
 + Unsolved ratios are high, indicating that most board images are facing the problem of incorrect digit recognition. Since the number of filled cells is big, more errors appear and less possible the board can be solved within 5 changes of cells.
-+ Angles of lower (denser distribution) and right (higher probability of a solution) are more preferable (somehow meaningless though).
++ Angles of lower (denser distribution) and right (higher probability of solution existence) are more preferable (somehow meaningless though).
 + The captured image of Sudoku board should be of the one with less filled numbers for better performance.
 
 
@@ -516,21 +618,29 @@ From which,
 #### Multiple Test Images
 By connecting the SudokuNet model with the solver, we may get the following test results upon the 100 images describe above,  
 
+<div style="text-align: center;">
+    <img src="pics/6-3_LeNet5_num_changed.png" alt="drawing" width="60%; margin:0 auto;"/>
+</div>
 
-<img src="pics/6-2_LeNet5_num_changed.png" alt="drawing" width="60%; margin:0 auto;"/>todo
-
-From which, todo
+From which, 
 
 + Unsolved ratios are high, indicating that most board images are facing the problem of incorrect digit recognition. Since the number of filled cells is big, more errors appear and less possible the board can be solved within 5 changes of cells.
-+ Angles of lower (denser distribution) and right (higher probability of a solution) are more preferable (somehow meaningless though).
++ Angle of right (denser distribution and higher probability of solution existence) is the most preferable (somehow meaningless though).
 + The captured image of Sudoku board should be of the one with less filled numbers for better performance.
 
 
 
-<br><br>
 
-<a id="execution---ei339-test-sudoku-boards"></a>
-## Execution - EI339 Test Sudoku Boards
+<!-- <br> -->
+
+<div style="page-break-after: always;"></div>
+
+
+
+
+
+<a id="final-execution---ei339-test-sudoku-boards"></a>
+## Final Execution - EI339 Test Sudoku Boards
 Although using models more advanced than LeNet-5 is allowed in this task, for simplicity, we stick on it and do not introduce other networks, since, 
 
 + The change of network structures includes almost just the same procedures as those done for LeNet-5, suggesting duplicate time-consuming work.
@@ -563,8 +673,19 @@ From which, we may come to the following observations and attributions,
     However, such phenomenon is far from expectation. The training set of algebraic is much larger and of higher quality than that of EI339, which should guarantees better performance.  
     A possible cause might lie in that the characteristics of Chinese numbers are more distinct and obvious. Thus, some of the algebraic numbers are trained more related to those of the Chinese ones.
 + In the recognization of Chinese numbers, mis-interpreted errors at the highest frequency are mainly `三 -> 2(二), 二 -> 3(三), 六 -> 8(八)`, which are quite comprehensive considering the structures of these writings.
++ As a result, the more difficult the problem is the more possible that it can be solved, which is in accordance with the difficulty growth from 1-1 to 1-5 (or 2-1 to 2-5).
 
 
+
+
+
+
+<br><br>
+
+<a id="summary"></a>
+## Summary
+Generally speaking, the project provides a hands-on introduction and insight of the CNN classifiers and CSP solver. At the same time, Python coding and project management is practiced.
+To sum up, time-consuming though for me, the project contents are solid and helpful.
 
 
 

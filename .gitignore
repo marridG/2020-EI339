@@ -13,6 +13,7 @@ _*.*
 *.h5
 !/opencv_sudoku_solver/output/digit_classifier.h5
 #report/
+*.pdf
 imgs/
 data/
 !data/*.py
