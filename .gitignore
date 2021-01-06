@@ -15,10 +15,14 @@ _*.*
 #report/
 *.pdf
 imgs/
+!/imgs/*.py
 data/
-!data/*.py
+data/dataset_crop/
+!/data/*.py
 models/
-run/final_out
+!/models/LeNet5__lr=0.00100__epoch=10__batch_size=32__epoch=10.pth
+run/
+!/run/*.py
 *.json
 
 # C extensions
