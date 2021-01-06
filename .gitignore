@@ -17,6 +17,7 @@ imgs/
 data/
 !data/*.py
 models/
+run/final_out
 *.json
 
 # C extensions

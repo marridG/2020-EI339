@@ -17,7 +17,7 @@ sb_solver_obj = sudoku_solver.SudokuSolver(max_err=max_err)
 image_path = "../imgs/test1/"
 out_img_path = "final_out"
 
-for test_image in os.listdir(image_path):
+for img_idx, test_image in enumerate(os.listdir(image_path)):
     if os.path.splitext(test_image)[1] not in [".png", ".jpg"]:
         continue
     test_image_full_path = os.path.join(image_path, test_image)
@@ -51,4 +51,3 @@ for test_image in os.listdir(image_path):
         print(solved_board.output_board_as_str(line_prefix="\t"))
     else:
         print("Cannot be Solved within %d Changes" % max_err)
-    # exit()
