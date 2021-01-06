@@ -11,6 +11,7 @@ EI339 Artificial Intelligence, 2020 Fall, SJTU
 <!-- MarkdownTOC -->
 
 - [Description](#description)
+- [Highlights](#highlights)
 - [Environment](#environment)
 - [Task 1 - OpenCV Sudoku Solver and OCR](#task-1---opencv-sudoku-solver-and-ocr)
     - [Image Preprocessing](#image-preprocessing)
@@ -57,18 +58,27 @@ EI339 Artificial Intelligence, 2020 Fall, SJTU
 
 <a id="description"></a>
 ## Description
-<!-- 1. The project is based on Project 2 **Linux Kernel Module for Task Information** of Chapter 3 of *Operating System Concepts (10th Edition) by Abraham Silberschatz, Peter Baer Galvin, Greg Gagne*, with [source codes](https://github.com/greggagne/osc10e) provided.
-2. The major tasks of the project are
-    + Writing to the `/proc` File System
-        * Copy the stored user input into kernel memory
-        * Translate to the PID integer
-    + Reading from the `/proc` File System
-        * Fetch the process/task information of the assigned PID
-        * Print three fields:
-            - the command the task is running
-            - the value of the task’s PID
-            - the current state of the task -->
+
+1. Understand the provided codes of `OpenCV Sudoku Solver and OCR` approach.
+2. Cooperate with fellow classmates to construct the `EI339-CN` dataset of handwritten Chinese numbers `一, 二,..., 九, 十`.
+3. Implement LeNet-5 and train on `MNIST + EI339-CN`.
+4. Implement a CSP solver for the Sudoku problem.
+4. Test the trained model and the solver upon given test images.
+
 <br>
+
+<a id="highlights"></a>
+## Highlights
+
+1. Fully-annotated codes: both in function prototypes and between the lines.
+2. Carefully designed and wrapped functionalities: divide the board-extraction, Sudoku-board-formation, problem-solving processes into different packages and provide high-level APIs.
+3. Extensive experiment upon **(1)** influence of the selection of train and test datasets; *(2)** SudokuNet VS LeNet-5; **(3)** LeNet-5 activations (with analysis), training hyper-parameters.
+4. Construct real-world Sudoku problems set based on the published book `《全民数独》` and conduct tests upon the images captured from 5 angles: bird-view, left, upper, right and lower.
+5. Analysis and solid intermediate results.
+6. Some other implemented useful functionalities.
+
+<br>
+
 
 <a id="environment"></a>
 ## Environment
@@ -273,7 +283,9 @@ Based on `LeCun, Yann, Léon Bottou, Yoshua Bengio, and Patrick Haffner. "Gradie
     <img src="pics/3-1.PNG" alt="drawing" width="100%; margin:0 auto;"/>
 </div>
 
-In modern frameworks, some tricks of `LeNet-5` (like layer $C3$, originally proposed due to the computation limits that time) are unnecessary at all. Thus, we may further simplify the network connections and add nonlinear activations (say, ReLU) for better performance.
+In modern frameworks, some tricks of `LeNet-5` (like layer $C3$, originally proposed due to the computation limits that time) are unnecessary at all. Thus, we may further simplify the network connections and add nonlinear activations for better performance.
+
+Here the **output is of shape 20**, where labels `0-9` correspond to algebraic numbers` 0-9` and labels `10-19` to Chinese numbers `十,一,...,九`.
 
 To get familiar with `PyTorch`, LeNet-5 is implemented in the framework of `PyTorch` from scratch, instead of in `TensorFlow` based on the [Network `SudokuNet` of the post](#neural-network---sudokunet).
 
@@ -454,8 +466,11 @@ Here we test how either of the two classifiers works together with the solver by
 ### SudokuNet + Solver
 <a id="single-test-image"></a>
 #### Single Test Image
-By connecting the SudokuNet model with the solver, in most cases, we may get the following somehow inaccurate test results, *(*left*: test Sudoku image; *middle & right*: results)*  
-<img src="pics/4-1_opencv.png" alt="drawing" width="100%; margin:0 auto;"/>
+By connecting the SudokuNet model (trained with `LearningRateR=1e-3, Epoch=10, BatchSize=32`) with the solver, in most cases, we may get the following somehow inaccurate test results, *(*left*: test Sudoku image; *middle & right*: results)*
+
+<div style="text-align: center;">  
+    <img src="pics/4-1_opencv.png" alt="drawing" width="100%; margin:0 auto;"/>
+</div>
 
 From which, 
 
@@ -466,7 +481,10 @@ From which,
 <a id="multiple-test-images"></a>
 #### Multiple Test Images
 By connecting the SudokuNet model with the solver, we may get the following test results upon the 100 images describe above,  
-<img src="pics/6-2_opencv_num_changed.png" alt="drawing" width="60%; margin:0 auto;"/>
+
+<div style="text-align: center;">
+    <img src="pics/6-2_opencv_num_changed.png" alt="drawing" width="60%; margin:0 auto;"/>
+</div>
 
 From which, 
 
@@ -482,8 +500,11 @@ From which,
 ### LeNet-5 + Solver
 <a id="single-test-image-1"></a>
 #### Single Test Image
-By connecting the LeNet-5 model (trained with BatchSize=32, LearningRate=0.001, Epoch=10) with the solver, we may get the following test results, *(*left*: test Sudoku image; *middle & right*: results)*  
-<img src="pics/4-2_lenet.png" alt="drawing" width="100%; margin:0 auto;"/>
+By connecting the LeNet-5 model (using `ReLU`activations, trained with `BatchSize=32, LearningRate=1e-3, Epoch=10`) with the solver, we may get the following test results, *(*left*: test Sudoku image; *middle & right*: results)*  
+
+<div style="text-align: center;">
+    <img src="pics/4-2_lenet.png" alt="drawing" width="100%; margin:0 auto;"/>
+</div>
 
 From which, 
 
@@ -494,6 +515,8 @@ From which,
 <a id="multiple-test-images-1"></a>
 #### Multiple Test Images
 By connecting the SudokuNet model with the solver, we may get the following test results upon the 100 images describe above,  
+
+
 <img src="pics/6-2_LeNet5_num_changed.png" alt="drawing" width="60%; margin:0 auto;"/>todo
 
 From which, todo
@@ -508,15 +531,38 @@ From which, todo
 
 <a id="execution---ei339-test-sudoku-boards"></a>
 ## Execution - EI339 Test Sudoku Boards
-Although using models more advanced that LeNet-5 is allowed in this task, for simplicity, we stick on it and do not introduce other networks, since, 
+Although using models more advanced than LeNet-5 is allowed in this task, for simplicity, we stick on it and do not introduce other networks, since, 
 
 + The change of network structures includes almost just the same procedures as those done for LeNet-5, suggesting duplicate time-consuming work.
 + Moreover, as stated by instructors, the project itself does not require high model accuracy.
 
-With regard to the test images provided by EI339 instructors, we have the following test results,
+With regard to the test images provided by EI339 instructors, we have the following test results, (using LeNet-5 structure of `ReLU` activation trained with `BatchSize=32, LearningRate=1e-3, Epoch=10`)
 
-todo
+Notice that, here, 
 
++ Since the writings are too light, they must be strengthened (e.g. using `cv2.dilate()`).
++ In the original digit extraction, a mask upon the largest contour is used. However, the trajectories of the Chinese numbers characters are not totally continuous. Thus, for the Chinese numbers, such functionality must be disabled.
+
+The test results of the ten Sudoku images are, (*left-most*: manually cropped Sudoku image; *left*: extracted digits, *right*: predicted board, *right-most*: solve results)
+<div style="text-align: center;">
+    <img src="pics/7-1-1.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/7-1-2.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/7-1-3.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/7-1-4.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/7-1-5.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/7-2-1.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/7-2-2.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/7-2-3.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/7-2-4.png" alt="drawing" width="100%; margin:0 auto;"/>
+    <img src="pics/7-2-5.png" alt="drawing" width="100%; margin:0 auto;"/>
+</div>
+
+From which, we may come to the following observations and attributions,
+
++ The recognization accuracy of algebraic numbers is rather low, resulting in the fact that most problems cannot be solved within 5 changes.  
+    However, such phenomenon is far from expectation. The training set of algebraic is much larger and of higher quality than that of EI339, which should guarantees better performance.  
+    A possible cause might lie in that the characteristics of Chinese numbers are more distinct and obvious. Thus, some of the algebraic numbers are trained more related to those of the Chinese ones.
++ In the recognization of Chinese numbers, mis-interpreted errors at the highest frequency are mainly `三 -> 2(二), 二 -> 3(三), 六 -> 8(八)`, which are quite comprehensive considering the structures of these writings.
 
 
 
