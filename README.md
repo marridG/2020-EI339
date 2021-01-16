@@ -55,10 +55,10 @@ Artificial Intelligence, 2020 Fall, SJTU
 │     opencv__train.py                  // API of SudokuNet prediction
 │     __init__.py
 │          
-│─solve_sudoku
-│      sudoku_board.py
-│      sudoku_solver.py
-│      __init__.py
+│─solve_sudoku                          // codes for Sudoku solver
+│      sudoku_board.py                  // implementation of Sudoku board
+│      sudoku_solver.py                 // Sudoku solver based on the board object
+│      __init__.py  
 │
 │
 ├─examples                              // example codes
